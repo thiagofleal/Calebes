@@ -2,11 +2,19 @@
     "name": "thiagofleal/calebes",
     "description": "Sistema de gestão de ponto da Missão Calebe",
     "type": "project",
+    "minimun-stability":"dev-master",
     "authors": [
         {
             "name": "thiagofleal",
             "email": "thiagofernandesleal@yahoo.com.br"
         }
     ],
-    "require": {}
+    "require": {
+    	"thiagofleal/tonight-php":"dev-master"
+    },
+    "autoload": {
+    	"psr-4": {
+    		"App\\":"app/"
+    	}
+    }
 }
