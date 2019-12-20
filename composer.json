@@ -1,0 +1,12 @@
+{
+    "name": "thiagofleal/calebes",
+    "description": "Sistema de gestão de ponto da Missão Calebe",
+    "type": "project",
+    "authors": [
+        {
+            "name": "thiagofleal",
+            "email": "thiagofernandesleal@yahoo.com.br"
+        }
+    ],
+    "require": {}
+}
