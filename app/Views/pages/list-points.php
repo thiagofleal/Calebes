@@ -8,9 +8,10 @@
 				<th>Nome</th>
 				<th>Endereço</th>
 				<th>Ações</th>
+				<th>Alocar</th>
 			</tr>
 		</thead>
-	<?php foreach ($points as $point): ?>
+<?php foreach ($points as $point): ?>
 		<tr>
 			<td><?= $point->getName() ?></td>
 			<td><?= $point->getAddress() ?></td>
@@ -22,7 +23,18 @@
 					Excluir
 				</a>
 			</td>
+			<td>
+<?php if ($point->getId() == $current_point): ?>
+				<a href="<?= Router::getLink('calebe/ponto', $point->getId(), 'alocar') ?>" class="btn btn-primary">
+					Alocado
+				</a>
+<?php else: ?>
+				<a href="<?= Router::getLink('calebe/ponto', $point->getId(), 'alocar') ?>" class="btn btn-secondary">
+					Alocar-se
+				</a>
+<?php endif; ?>
+			</td>
 		</tr>
-	<?php endforeach; ?>
+<?php endforeach; ?>
 	</table>
 </div>

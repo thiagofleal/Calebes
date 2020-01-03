@@ -81,14 +81,16 @@ class Member
 		return $ret;
 	}
 
-	public static function getFromPointOrNull($pointer_id)
+	public static function getFromPointOrNull($point_id)
 	{
 		$db = new DataBase('member');
 		$ret = array();
 		
-		foreach ($db->member->where( function($row) use($pointer_id) {
-			return empty($row->pointer) || $row->pointer == $pointer_id;
-		}) as $value) {
+		foreach (
+			$db->member->where( function($row) use($point_id) {
+				return empty($row->point) || $row->point == $point_id;
+			}) as $value
+		) {
 			$ret[] = self::get($value->id);
 		}
 

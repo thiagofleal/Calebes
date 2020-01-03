@@ -28,6 +28,8 @@ class PointController extends Controller
 		$this->checkLeader();
 		$this->setVariable('title', 'Gerenciar pontos');
 		$this->setVariable('points', Point::getAll());
+		$user = Session::get('user');
+		$this->setVariable('current_point', $user->getPoint());
 		$this->render('list-points', 'main-template');
 	}
 
@@ -162,6 +164,15 @@ class PointController extends Controller
 		if ($point !== false) {
 			$point->delete();
 		}
+		Router::redirect('pontos');
+	}
+
+	public function addUser($args)
+	{
+		$this->checkLeader();
+		$user = Session::get('user');
+		$user->setPoint($args->id);
+		$user->update();
 		Router::redirect('pontos');
 	}
 }

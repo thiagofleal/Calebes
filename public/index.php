@@ -6,6 +6,7 @@ use Tonight\Server\Request;
 use Tonight\Server\Session;
 use Tonight\MVC\Config;
 use Tonight\MVC\Router;
+use App\Models\Member;
 
 Session::start();
 
@@ -38,6 +39,7 @@ Config::addRoute('ponto/{id}/visualizar', 'PointController@view');
 Config::addRoute('ponto/{id}/editar', 'PointController@edit');
 Config::addRoute('ponto/{id}/acao/editar', 'PointController@editAction');
 Config::addRoute('ponto/{id}/excluir', 'PointController@delete');
+Config::addRoute('calebe/ponto/{id}/alocar', 'PointController@addUser');
 
 Config::addRoute('calebes', 'UserController@index');
 Config::addRoute('calebe/cadastrar', 'UserController@register');
@@ -46,17 +48,20 @@ Config::addRoute('calebe/{id}/visualizar', 'UserController@view');
 Config::addRoute('calebe/{id}/editar', 'UserController@edit');
 Config::addRoute('calebe/{id}/acao/editar', 'UserController@editAction');
 Config::addRoute('calebe/{id}/excluir', 'UserController@delete');
-Config::addRoute('lider/{id}/adicionar', 'UserController@addLeader');
-Config::addRoute('lider/{id}/remover', 'UserController@removeLeader');
-Config::addRoute('ponto/{id}/alocar', 'UserController@addPoint');
-Config::addRoute('ponto/{id}/desalocar', 'UserController@removePoint');
+Config::addRoute('lider/calebe/{id}/adicionar', 'UserController@addLeader');
+Config::addRoute('lider/calebe/{id}/remover', 'UserController@removeLeader');
+Config::addRoute('ponto/calebe/{id}/alocar', 'UserController@addPoint');
+Config::addRoute('ponto/calebe/{id}/desalocar', 'UserController@removePoint');
 /*
 Config::addRoute('pesquisa/cadastrar', 'SeachController@register');
 Config::addRoute('pesquisa/{id}/visualizar', 'SearchController@view');
 Config::addRoute('pesquisa/{id}/editar', 'SearchController@edit');
 Config::addRoute('pesquisa/{id}/excluir', 'SearchController@delete');
 */
-if (!Session::isset('user')) {
+if (Session::isset('user')) {
+	$user = Session::get('user');
+	Session::set('user', Member::get($user->getId()));
+} else {
 	Session::set('user', false);
 }
 
