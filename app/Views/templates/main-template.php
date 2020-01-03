@@ -1,6 +1,10 @@
-<?php use Tonight\MVC\Router; ?>
-<?php $public = Router::getLink() ?>
-<?php $login = Router::getLink('login') ?>
+<?php
+use Tonight\Server\Session;
+use Tonight\MVC\Router;
+
+$public = Router::getLink();
+$user = Session::get('user');
+?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -16,7 +20,7 @@
 <?php require __DIR__ . '/header.php'; ?>
 
 <?php $this->content(); ?>
-
+		<br>
 <?php require __DIR__ . '/footer.php'; ?>
 
 		<!--[if lt IE 9]>

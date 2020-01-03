@@ -5,27 +5,27 @@
 			<?= $alert['text'] ?>
 		</div>
 	<?php endif; ?>
-	<h1>Cadastrar ponto</h1>
+	<h1><?= $title ?></h1>
 	<hr>
 	<form method="post" action="<?= $action ?>">
 		<div class="input-group mb-3">
 			<div class="input-group-prepend">
 				<label for="name" class="input-group-text">
-					Nome
+					Nome <small>*</small>
 				</label>
 			</div>
-			<input type="text" name="name" id="name" class="form-control" required="required" />
+			<input type="text" name="name" id="name" class="form-control" value="<?= $form->name ?? '' ?>" required="required" />
 		</div>
 		<div class="input-group mb-3">
 			<div class="input-group-prepend">
 				<label for="address" class="input-group-text">
-					Endereço
+					Endereço <small>*</small>
 				</label>
 			</div>
-			<input type="search" name="address" id="address" class="form-control" required="required" />
+			<input type="search" name="address" id="address" class="form-control" value="<?= $form->address ?? '' ?>" required="required" />
 		</div>
 		<hr>
-		<button type="submit" class="btn btn-primary">Cadastrar</button>
+		<button type="submit" class="btn btn-primary">Salvar</button>
 		<button type="button" class="btn btn-danger btn-clear-form">Cancelar</button>
 	</form>
 </div>

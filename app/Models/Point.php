@@ -8,6 +8,16 @@ class Point
 	private $name;
 	private $address;
 
+	public static function get($id)
+	{
+		$point = new self();
+		if ($point->load($id)) {
+			return $point;
+		} else {
+			return false;
+		}
+	}
+
 	public function __construct() {}
 
 	public function getId() { return $this->id; }
@@ -21,7 +31,11 @@ class Point
 	public static function getAll()
 	{
 		$db = new DataBase('point');
-		return $db->point->get();
+		$ret = array();
+		foreach ($db->point as $value) {
+			$ret[] = self::get($value->id);
+		}
+		return $ret;
 	}
 
 	public function insert()
@@ -59,8 +73,8 @@ class Point
 	{
 		$db = new DataBase('point');
 
-		$result = $db->point->where( function($row) use($id) {
-			return $row->id == $id;
+		$result = $db->point->where( function($row) {
+			return $row->id == $this->id;
 		});
 
 		if ($result->size() == 0) {
@@ -82,8 +96,8 @@ class Point
 	{
 		$db = new DataBase('point');
 
-		$result = $db->point->where( function($row) use($id) {
-			return $row->id == $id;
+		$result = $db->point->where( function($row) {
+			return $row->id == $this->id;
 		});
 
 		if ($result->size() == 0) {
@@ -92,7 +106,7 @@ class Point
 
 		$result = $result->get(0);
 
-		$db->point->removeValue($result);
+		$db->point->removeFirst($result);
 		$db->point->update();
 
 		return true;

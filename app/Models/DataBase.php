@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Tonight\Data\MySQL;
 use Tonight\MVC\Router;
+use \PDO;
 use \PDOException;
 use \Exception;
 
@@ -21,6 +22,7 @@ class DataBase extends MySQL
 			$pass = '';
 			parent::__construct($con, $user, $pass);
 			$this->start($fields);
+			$this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		}
 		catch(PDOException $e)
 		{

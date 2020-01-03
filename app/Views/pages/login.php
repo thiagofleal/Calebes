@@ -1,4 +1,10 @@
 <div class="container">
+  <?php if ($flash): ?>
+    <div class="alert <?= $alert['type'] ?>">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      <?= $alert['text'] ?>
+    </div>
+  <?php endif; ?>
   <fieldset>
     <h1>Login</h1>
     <hr>
@@ -6,7 +12,7 @@
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <label for="user" class="input-group-text">
-            Usuário
+            Usuário <small>*</small>
           </label>
         </div>
         <input type="text" name="user" id="user" class="form-control" required="required" />
@@ -14,7 +20,7 @@
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <label for="password" class="input-group-text">
-            Senha
+            Senha <small>*</small>
           </label>
         </div>
         <input type="password" name="password" id="password" class="form-control" required="required" />
