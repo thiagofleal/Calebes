@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use Tonight\MVC\Controller;
 use Tonight\MVC\Router;
-use Tonight\Server\Session;
+use Tonight\Tools\Session;
 use App\Models\Point;
 
 class PointController extends Controller
@@ -161,7 +161,12 @@ class PointController extends Controller
 	{
 		$this->checkLeader();
 		$point = Point::get($args->id);
+		$user = Session::get('user');
 		if ($point !== false) {
+			if ($user->getPoint() == $args->id) {
+				$user->setPoint('');
+				$user->update();
+			}
 			$point->delete();
 		}
 		Router::redirect('pontos');

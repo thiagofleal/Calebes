@@ -1,5 +1,5 @@
 <?php
-use Tonight\Server\Session;
+use Tonight\Tools\Session;
 use Tonight\MVC\Router;
 
 $public = Router::getLink();

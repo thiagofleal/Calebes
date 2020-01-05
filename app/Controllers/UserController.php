@@ -2,8 +2,8 @@
 
 namespace App\Controllers;
 
-use Tonight\Server\Session;
-use Tonight\Server\Request;
+use Tonight\Tools\Session;
+use Tonight\Tools\Request;
 use Tonight\MVC\Controller;
 use Tonight\MVC\Router;
 use App\Models\Member;

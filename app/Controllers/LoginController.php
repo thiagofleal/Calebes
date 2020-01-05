@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use Tonight\Server\Session;
+use Tonight\Tools\Session;
 use Tonight\MVC\Router;
 use Tonight\MVC\Controller;
 use App\Models\Member;

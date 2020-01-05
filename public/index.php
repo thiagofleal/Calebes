@@ -2,8 +2,8 @@
 
 require __DIR__ . '/../bootstrap.php';
 
-use Tonight\Server\Request;
-use Tonight\Server\Session;
+use Tonight\Tools\Request;
+use Tonight\Tools\Session;
 use Tonight\MVC\Config;
 use Tonight\MVC\Router;
 use App\Models\Member;
@@ -17,7 +17,7 @@ Config::setViewsPath( __DIR__ . '/../app/Views/pages' );
 Config::setTemplatesPath( __DIR__ . '/../app/Views/templates' );
 
 Config::setUrlGetter( function() {
-	$request = new Request(Request::GET);
+	$request = Request::getMode();
 	return $request->get('url', '');
 });
 
@@ -58,7 +58,7 @@ Config::addRoute('pesquisa/{id}/visualizar', 'SearchController@view');
 Config::addRoute('pesquisa/{id}/editar', 'SearchController@edit');
 Config::addRoute('pesquisa/{id}/excluir', 'SearchController@delete');
 */
-if (Session::isset('user')) {
+if (Session::isset('user') && Session::get('user') !== false) {
 	$user = Session::get('user');
 	Session::set('user', Member::get($user->getId()));
 } else {
