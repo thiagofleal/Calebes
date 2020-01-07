@@ -3,9 +3,8 @@
 namespace App\Controllers;
 
 use Tonight\MVC\Router;
-use Tonight\MVC\Controller;
 
-class ErrorController extends Controller
+class ErrorController extends BaseController
 {
 	public function notFound()
 	{

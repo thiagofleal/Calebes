@@ -7,6 +7,8 @@ $link->registerPoint = Router::getLink('ponto/cadastrar');
 $link->managePoints = Router::getLink('pontos');
 $link->registerUser = Router::getLink('calebe/cadastrar');
 $link->manageUsers = Router::getLink('calebes');
+$link->registerSearch = Router::getLink('pesquisa/cadastrar');
+$link->manageSearches = Router::getLink('pesquisas');
 $leader = false;
 
 if ($user !== false) {
@@ -51,8 +53,8 @@ if ($user !== false) {
             Pesquisa
           </a>
           <div class="dropdown-menu">
-            <a href="" class="dropdown-item">Cadastrar</a>
-            <a href="" class="dropdown-item">Gerenciar</a>
+            <a href="<?= $link->registerSearch ?>" class="dropdown-item">Cadastrar</a>
+            <a href="<?= $link->manageSearches ?>" class="dropdown-item">Gerenciar</a>
           </div>
         </li>
 <?php endif; ?>

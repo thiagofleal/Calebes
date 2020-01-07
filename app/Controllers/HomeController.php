@@ -3,9 +3,8 @@
 namespace App\Controllers;
 
 use Tonight\MVC\Router;
-use Tonight\MVC\Controller;
 
-class HomeController extends Controller
+class HomeController extends BaseController
 {
 	public function index()
 	{

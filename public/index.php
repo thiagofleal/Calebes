@@ -52,12 +52,14 @@ Config::addRoute('lider/calebe/{id}/adicionar', 'UserController@addLeader');
 Config::addRoute('lider/calebe/{id}/remover', 'UserController@removeLeader');
 Config::addRoute('ponto/calebe/{id}/alocar', 'UserController@addPoint');
 Config::addRoute('ponto/calebe/{id}/desalocar', 'UserController@removePoint');
-/*
-Config::addRoute('pesquisa/cadastrar', 'SeachController@register');
-Config::addRoute('pesquisa/{id}/visualizar', 'SearchController@view');
+
+Config::addRoute('pesquisas', 'SearchController@index');
+Config::addRoute('pesquisa/cadastrar', 'SearchController@register');
+Config::addRoute('pesquisa/acao/cadastrar', 'SearchController@registerAction');
 Config::addRoute('pesquisa/{id}/editar', 'SearchController@edit');
+Config::addRoute('pesquisa/{id}/acao/editar', 'SearchController@editAction');
 Config::addRoute('pesquisa/{id}/excluir', 'SearchController@delete');
-*/
+
 if (Session::isset('user') && Session::get('user') !== false) {
 	$user = Session::get('user');
 	Session::set('user', Member::get($user->getId()));

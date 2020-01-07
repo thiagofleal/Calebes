@@ -2,27 +2,12 @@
 
 namespace App\Controllers;
 
-use Tonight\MVC\Controller;
 use Tonight\MVC\Router;
 use Tonight\Tools\Session;
 use App\Models\Point;
 
-class PointController extends Controller
+class PointController extends BaseController
 {
-	private function checkLeader()
-	{
-		$user = Session::get('user');
-
-		if ($user === false) {
-			Router::redirect();
-			exit;
-		}
-		if (!$user->isLeader()) {
-			Router::redirect();
-			exit;
-		}
-	}
-
 	public function index()
 	{
 		$this->checkLeader();

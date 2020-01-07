@@ -102,7 +102,7 @@ class Member
 		$db = new DataBase('member');
 		
 		$result = $db->member->where( function($row) use($user, $password) {
-			return $row->document == $user && $row->password == md5($password);
+			return ($row->document == $user || $row->email == $user) && $row->password == md5($password);
 		});
 
 		if ($result->size() > 0) {

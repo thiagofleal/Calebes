@@ -4,10 +4,9 @@ namespace App\Controllers;
 
 use Tonight\Tools\Session;
 use Tonight\MVC\Router;
-use Tonight\MVC\Controller;
 use App\Models\Member;
 
-class LoginController extends Controller
+class LoginController extends BaseController
 {
 	public function index()
 	{

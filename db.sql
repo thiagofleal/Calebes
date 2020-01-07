@@ -1,5 +1,6 @@
 CREATE DATABASE `caleb_mission`;
 USE `caleb_mission`;
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
@@ -51,16 +52,15 @@ CREATE TABLE `question` (
   `search` int(11) NOT NULL,
   `number` int(11) NOT NULL,
   `text` varchar(100) NOT NULL,
-  `creator` int(11) NOT NULL,
   `creation` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `search` (
   `id` int(11) NOT NULL,
   `point` int(11) NOT NULL,
-  `creator` int(11) NOT NULL,
   `creation` datetime DEFAULT CURRENT_TIMESTAMP,
-  `token` char(32) DEFAULT NULL
+  `token` char(32) DEFAULT NULL,
+  `name` varchar(30) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 ALTER TABLE `ask`
@@ -82,22 +82,20 @@ ALTER TABLE `point`
   ADD PRIMARY KEY (`id`);
 
 ALTER TABLE `question`
-  ADD PRIMARY KEY (`search`,`number`),
-  ADD KEY `creator` (`creator`);
+  ADD PRIMARY KEY (`search`,`number`);
 
 ALTER TABLE `search`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `point` (`point`),
-  ADD KEY `creator` (`creator`);
+  ADD KEY `point` (`point`);
 
 ALTER TABLE `ask`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `member`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `point`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `search`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
@@ -116,10 +114,8 @@ ALTER TABLE `option`
   ADD CONSTRAINT `option_ibfk_1` FOREIGN KEY (`search`,`question_number`) REFERENCES `question` (`search`, `number`);
 
 ALTER TABLE `question`
-  ADD CONSTRAINT `question_ibfk_1` FOREIGN KEY (`search`) REFERENCES `search` (`id`),
-  ADD CONSTRAINT `question_ibfk_2` FOREIGN KEY (`creator`) REFERENCES `leader` (`id`);
+  ADD CONSTRAINT `question_ibfk_1` FOREIGN KEY (`search`) REFERENCES `search` (`id`);
 
 ALTER TABLE `search`
-  ADD CONSTRAINT `search_ibfk_1` FOREIGN KEY (`point`) REFERENCES `point` (`id`),
-  ADD CONSTRAINT `search_ibfk_2` FOREIGN KEY (`creator`) REFERENCES `leader` (`id`);
+  ADD CONSTRAINT `search_ibfk_1` FOREIGN KEY (`point`) REFERENCES `point` (`id`);
 COMMIT;

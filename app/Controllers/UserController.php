@@ -4,41 +4,12 @@ namespace App\Controllers;
 
 use Tonight\Tools\Session;
 use Tonight\Tools\Request;
-use Tonight\MVC\Controller;
 use Tonight\MVC\Router;
 use App\Models\Member;
 use App\Models\Leader;
 
-class UserController extends Controller
+class UserController extends BaseController
 {
-	private function checkLeader()
-	{
-		$user = Session::get('user');
-
-		if ($user === false) {
-			Router::redirect();
-			exit;
-		}
-		if (!$user->isLeader()) {
-			Router::redirect();
-			exit;
-		}
-	}
-
-	private function checkLeaderOrSelf($id)
-	{
-		$user = Session::get('user');
-
-		if ($user === false) {
-			Router::redirect();
-			exit;
-		}
-		if (!$user->isLeader() && $user->getId() != $id) {
-			Router::redirect();
-			exit;
-		}
-	}
-
 	public function index()
 	{
 		$this->checkLeader();
@@ -125,7 +96,8 @@ class UserController extends Controller
 			$member->setEmail($request->get('email', ''));
 			$member->setTshirt_size($request->get('tshirt_size', ''));
 			$member->setPassword($request->password);
-			//$member->setPoint(1);
+			$user = Session::get('user');
+			$member->setPoint($user->getPoint());
 
 			if ($member->insert()) {
 				Session::setFlash('register-user', [
@@ -153,18 +125,20 @@ class UserController extends Controller
 		if (Session::issetFlash('register-user-values')) {
 			$this->setVariable('form', Session::getFlash('register-user-values'));
 		} else {
-			$member = new Member();
-			$form = new \stdClass;
-
-			$member->load($args->id);
-			$form->name = $member->getName();
-			$form->birth = $member->getBirth();
-			$form->address = $member->getAddress();
-			$form->phone = $member->getPhone();
-			$form->email = $member->getEmail();
-			$form->tshirt_size = $member->getTshirt_size();
-			$form->document = $member->getDocument();
-			$form->document_type = $member->getDocument_type();
+			$member = Member::get($args->id);
+			if ($member !== false) {
+				$form = new \stdClass;
+				$form->name = $member->getName();
+				$form->birth = $member->getBirth();
+				$form->address = $member->getAddress();
+				$form->phone = $member->getPhone();
+				$form->email = $member->getEmail();
+				$form->tshirt_size = $member->getTshirt_size();
+				$form->document = $member->getDocument();
+				$form->document_type = $member->getDocument_type();
+			} else {
+				$form = new \stdClass;
+			}
 		}
 
 		$this->setVariable('form', $form);
@@ -184,8 +158,7 @@ class UserController extends Controller
 	public function editAction($args, $request)
 	{
 		$this->checkLeaderOrSelf($args->id);
-		$member = new Member();
-
+		
 		Session::setFlash('edit-user-values', $request);
 
 		if (empty($request->name)) {
@@ -213,26 +186,33 @@ class UserController extends Controller
 			]);
 		}
 		else {
-			$member->load($args->id);
-			$member->setDocument($request->document);
-			$member->setDocument_type($request->document_type);
-			$member->setName($request->name);
-			$member->setBirth($request->get('birth', ''));
-			$member->setAddress($request->get('address', ''));
-			$member->setPhone($request->get('phone', ''));
-			$member->setEmail($request->get('email', ''));
-			$member->setTshirt_size($request->get('tshirt_size', ''));
-			$member->setPassword($request->get('password', ''));
+			$member = Member::get($args->id);
+			if ($member !== false) {
+				$member->setDocument($request->document);
+				$member->setDocument_type($request->document_type);
+				$member->setName($request->name);
+				$member->setBirth($request->get('birth', ''));
+				$member->setAddress($request->get('address', ''));
+				$member->setPhone($request->get('phone', ''));
+				$member->setEmail($request->get('email', ''));
+				$member->setTshirt_size($request->get('tshirt_size', ''));
+				$member->setPassword($request->get('password', ''));
 
-			if ($member->update()) {
-				Session::setFlash('edit-user', [
-					'type' => 'alert-success',
-					'text' => 'Calebe atualizado com sucesso'
-				]);
+				if ($member->update()) {
+					Session::setFlash('edit-user', [
+						'type' => 'alert-success',
+						'text' => 'Calebe atualizado com sucesso'
+					]);
+				} else {
+					Session::setFlash('edit-user', [
+						'type' => 'alert-warning',
+						'text' => 'Erro ao atualizar cadastro'
+					]);
+				}
 			} else {
 				Session::setFlash('edit-user', [
-					'type' => 'alert-warning',
-					'text' => 'Erro ao atualizar cadastro'
+					'type' => 'alert-danger',
+					'text' => 'Usuário não encontrado'
 				]);
 			}
 		}
