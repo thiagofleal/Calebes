@@ -4,16 +4,16 @@ namespace App\Models;
 
 class Option
 {
-	private $search;
-	private $question_number;
+	private $id;
+	private $question;
 	private $number;
 	private $text;
 	private $insert;
 
-	public static function get($search, $question_number, $number)
+	public static function get($id)
 	{
 		$option = new self();
-		if ($option->load($search, $question_number, $number)) {
+		if ($option->load($id)) {
 			return $option;
 		} else {
 			return false;
@@ -22,11 +22,21 @@ class Option
 
 	public function __construct() {}
 
-	public function getSearch() { return $this->search; }
-	public function setSearch($search) { $this->search = $search; }
+	public function getId() { return $this->id; }
+	
+	public function getQuestion()
+	{
+		return Question::get($this->question);
+	}
 
-	public function getQuestionNumber() { return $this->question_number; }
-	public function setQuestionNumber($question_number) { $this->question_number = $question_number; }
+	public function setQuestion($question)
+	{
+		if ($question instanceof Question) {
+			$this->question = $question->getId();
+		} else {
+			$this->question = $question;
+		}
+	}
 
 	public function getNumber() { return $this->number; }
 	public function setNumber($number) { $this->number = $number; }
@@ -54,10 +64,7 @@ class Option
 		$db = new DataBase('option');
 
 		$result = $db->option->where( function($row) {
-			return
-				$row->search == $this->search &&
-				$row->question_number == $this->question_number &&
-				$row->number == $this->number;
+			return $row->id == $this->id;
 		});
 
 		if ($result->size() > 0) {
@@ -65,8 +72,7 @@ class Option
 		}
 
 		$db->option->append([
-			'search' => $this->search,
-			'question_number' => $this->question_number,
+			'question' => $this->question,
 			'number' => $this->number,
 			'text' => $this->text,
 			'insert' => $this->insert
@@ -75,15 +81,12 @@ class Option
 		return true;
 	}
 
-	public function load($search, $question_number, $number)
+	public function load($id)
 	{
 		$db = new DataBase('option');
 
-		$result = $db->option->where( function($row) use($search, $question_number, $number) {
-			return
-				$row->search == $search &&
-				$row->question_number == $question_number &&
-				$row->number == $number;
+		$result = $db->option->where( function($row) use($id) {
+			return $row->id == $id;
 		});
 
 		if ($result->size() == 0) {
@@ -104,10 +107,7 @@ class Option
 		$db = new DataBase('option');
 
 		$result = $db->option->where( function($row) {
-			return
-				$row->search == $this->search &&
-				$row->question_number == $this->question_number &&
-				$row->number == $this->number;
+			return $row->id == $this->id;
 		});
 
 		if ($result->size() == 0) {
@@ -131,10 +131,7 @@ class Option
 		$db = new DataBase('option');
 
 		$result = $db->option->where( function($row) {
-			return
-				$row->search == $this->search &&
-				$row->question_number == $this->question_number &&
-				$row->number == $this->number;
+			return $row->id == $this->id;
 		});
 
 		if ($result->size() == 0) {
@@ -146,13 +143,20 @@ class Option
 		$db->option->removeFirst($result);
 		$db->option->update();
 
+		$question = $this->getQuestion();
 		$next = $this->number + 1;
-		$option = self::get($this->search, $this->question_number, $next);
 
-		if ($option !== false) {
-			$option->delete();
+		while (true) {
+			$option = $question->getOption($next);
+
+			if ($option === false) {
+				break;
+			}
+
 			$option->setNumber($next - 1);
-			$option->insert();
+			$option->update();
+
+			$next++;
 		}
 
 		return true;

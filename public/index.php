@@ -145,6 +145,10 @@ Config::addRoute(
 	'SearchController@edit'
 );
 Config::addRoute(
+	'pesquisa/{id}/abrir',
+	'SearchController@open'
+);
+Config::addRoute(
 	'pesquisa/{id}/acao/editar',
 	'SearchController@editAction'
 );

@@ -14,7 +14,15 @@ class PointController extends BaseController
 		$this->setVariable('title', 'Gerenciar pontos');
 		$this->setVariable('points', Point::getAll());
 		$user = Session::get('user');
-		$this->setVariable('current_point', $user->getPoint());
+		$current_point = $user->getPoint();
+
+		if ($current_point === false) {
+			$current_point = NULL;
+		} else {
+			$current_point = $current_point->getId();
+		}
+
+		$this->setVariable('current_point', $current_point);
 		$this->render('list-points', 'main-template');
 	}
 

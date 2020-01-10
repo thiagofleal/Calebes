@@ -29,10 +29,10 @@
 					Texto
 				</option>
 				<option value="2" <?= ($form->type ?? 1) == 2 ? 'selected="selected"' : '' ?>>
-					Alternativa
+					Alternativas
 				</option>
 				<option value="3" <?= ($form->type ?? 1) == 3 ? 'selected="selected"' : '' ?>>
-					Caixa de seleção
+					Caixas de seleção
 				</option>
 			</select>
 		</div>
@@ -43,6 +43,9 @@
 		<button type="button" class="btn btn-danger btn-clear-form">
 			Cancelar
 		</button>
+		<a href="<?= $link_questions ?>" class="btn btn-secondary">
+			Editar pergunta
+		</a>
 	</form>
 <?php if ($add_options): ?>
 	<hr>
@@ -68,8 +71,8 @@
 				<td>
 					<a href="<?=
 						Router::getLink(
-							'pesquisa', $option->getSearch(),
-							'pergunta', $option->getQuestionNumber(),
+							'pesquisa', $option->getQuestion()->getSearch()->getId(),
+							'pergunta', $option->getQuestion()->getNumber(),
 							'resposta', $option->getNumber(),
 							'acao/subir'
 						)
@@ -77,8 +80,8 @@
 						<img src="<?= $images ?>/arrow-up.png">
 					</a> | <a href="<?=
 						Router::getLink(
-							'pesquisa', $option->getSearch(),
-							'pergunta', $option->getQuestionNumber(),
+							'pesquisa', $option->getQuestion()->getSearch()->getId(),
+							'pergunta', $option->getQuestion()->getNumber(),
 							'resposta', $option->getNumber(),
 							'acao/descer'
 						)
@@ -89,16 +92,16 @@
 				<td>
 					<a href="<?=
 						Router::getLink(
-							'pesquisa', $option->getSearch(),
-							'pergunta', $option->getQuestionNumber(),
+							'pesquisa', $option->getQuestion()->getSearch()->getId(),
+							'pergunta', $option->getQuestion()->getNumber(),
 							'resposta', $option->getNumber(),
 							'editar'
 						)
 					?>" class="btn btn-warning">Editar</a>
 					<a href="<?=
 						Router::getLink(
-							'pesquisa', $option->getSearch(),
-							'pergunta', $option->getQuestionNumber(),
+							'pesquisa', $option->getQuestion()->getSearch()->getId(),
+							'pergunta', $option->getQuestion()->getNumber(),
 							'resposta', $option->getNumber(),
 							'acao/remover'
 						)

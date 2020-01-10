@@ -21,6 +21,9 @@
 		<a href="<?= $add_question_link ?>" class="btn btn-success">
 			Adicionar pergunta
 		</a>
+		<a href="<?= $view_link ?>" class="btn btn-info">
+			Visualizar
+		</a>
 		<hr>
 		<table class="table table-borderless table-responsive d-md-table">
 			<thead>
@@ -39,7 +42,7 @@
 					<td>
 						<a href="<?=
 							Router::getLink(
-								'pesquisa', $question->getSearch(),
+								'pesquisa', $question->getSearch()->getId(),
 								'pergunta', $question->getNumber(),
 								'acao/subir'
 							)
@@ -47,7 +50,7 @@
 							<img src="<?= $images ?>/arrow-up.png">
 						</a> | <a href="<?=
 							Router::getLink(
-								'pesquisa', $question->getSearch(),
+								'pesquisa', $question->getSearch()->getId(),
 								'pergunta', $question->getNumber(),
 								'acao/descer'
 							)
@@ -58,14 +61,14 @@
 					<td>
 						<a href="<?= Router::getLink(
 								'pesquisa',
-								$question->getSearch(),
+								$question->getSearch()->getId(),
 								'pergunta',
 								$question->getNumber(),
 								'editar'
 							) ?>" class="btn btn-warning">Editar</a>
 						<a href="<?= Router::getLink(
 								'pesquisa',
-								$question->getSearch(),
+								$question->getSearch()->getId(),
 								'pergunta',
 								$question->getNumber(),
 								'excluir'
@@ -83,5 +86,8 @@
 		<button type="button" class="btn btn-danger btn-clear-form">
 			Cancelar
 		</button>
+		<a href="<?= Router::getLink('pesquisas') ?>" class="btn btn-secondary">
+			Gerenciar pesquisas
+		</a>
 	</form>
 </div>

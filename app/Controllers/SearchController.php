@@ -15,7 +15,7 @@ class SearchController extends BaseController
 		$this->checkLeader();
 		$this->setVariable('title', 'Listar pesquisas');
 		$user = Session::get('user');
-		$point = Point::get($user->getPoint());
+		$point = $user->getPoint();
 		$this->setVariable('researches', $point->getResearches());
 		$this->render('list-researches', 'main-template');
 	}
@@ -61,13 +61,21 @@ class SearchController extends BaseController
 
 	public function edit($args)
 	{
-		$this->checkLeader();
-		$this->setVariable('title', 'Criar pesquisa');
+		$search = Search::get($args->id);
+
+		if ($search === false) {
+			Router::redirect();
+		}
+
+		$this->checkLeaderAndPoint($search->getPoint());
+		
+		$this->setVariable('title', 'Editar pesquisa');
 		$this->setVariable('action', Router::getLink('pesquisa', $args->id, 'acao/editar'));
 		$this->setVariable('images', Router::getLink('assets/images'));
+		$this->setVariable('view_link', Router::getLink('pesquisa', $search->getId(), 'abrir'));
 		$this->setVariable('add_questions', true);
 		$this->setVariable('add_question_link', Router::getLink('pesquisa', $args->id, 'pergunta/adicionar'));
-		$search = Search::get($args->id);
+		
 		if ($search === false) {
 			$this->setVariable('flash', true);
 			$this->setVariable('alert', [
@@ -79,6 +87,7 @@ class SearchController extends BaseController
 			$form = new \stdClass;
 			$form->name = $search->getName();
 		}
+		
 		$this->setVariable('form', $form);
 		$this->setVariable('questions', $search->getQuestions());
 		if (Session::issetFlash('edit-search')) {
@@ -96,8 +105,14 @@ class SearchController extends BaseController
 
 	public function editAction($args, $request)
 	{
-		$this->checkLeader();
 		$search = Search::get($args->id);
+
+		if ($search === false) {
+			Router::redirect();
+		}
+
+		$this->checkLeaderAndPoint($search->getPoint());
+		
 		if ($search === false) {
 			Session::setFlash('edit-search', [
 				'type' => 'alert-danger',
@@ -140,5 +155,28 @@ class SearchController extends BaseController
 			}
 		}
 		Router::redirect('pesquisas');
+	}
+
+	public function open($args)
+	{
+		$search = Search::get($args->id);
+
+		if ($search === false) {
+			Router::redirect();
+		}
+
+		$this->setVariable('title', $search->getName());
+		$this->setVariable('questions', $search->getQuestions());
+		if (Session::issetFlash('open-search')) {
+			$this->setVariable('flash', true);
+			$this->setVariable('alert', Session::getFlash('open-search'));
+		} else {
+			$this->setVariable('flash', false);
+			$this->setVariable('alert', [
+				'type' => '',
+				'text' => ''
+			]);
+		}
+		$this->render('search-view', 'main-template');
 	}
 }

@@ -25,6 +25,7 @@ class QuestionController extends BaseController
 		$this->setVariable('action', Router::getLink('pesquisa', $search->getId(), 'pergunta/acao/adicionar'));
 		$this->setVariable('add_options', false);
 		$this->setVariable('options', array());
+		$this->setVariable('link_questions', Router::getLink('pesquisa', $search->getId(), 'editar'));
 		if (Session::issetFlash('register-question-values')) {
 			$this->setVariable('form', Session::getFlash('register-question-values'));
 		} else {
@@ -51,13 +52,15 @@ class QuestionController extends BaseController
 			Router::redirect();
 			exit;
 		}
-
+		
+		$this->checkLeaderAndPoint($search->getPoint());
+		
 		$last_question = $search->getQuestions();
 		$last_question = array_pop($last_question);
 		$last_question = $last_question ? $last_question->getNumber() : 0;
-		$this->checkLeaderAndPoint($search->getPoint());
 		$title = $request->get('title', '');
 		$text = $request->get('text', '');
+		$type = $request->get('type', '');
 
 		if (empty($text)) {
 			Session::setFlash('register-question', [
@@ -71,6 +74,7 @@ class QuestionController extends BaseController
 		$question = new Question();
 		$question->setTitle($title);
 		$question->setText($text);
+		$question->setType($type);
 		$question->setSearch($search->getId());
 		$question->setNumber($last_question + 1);
 		$question->insert();
@@ -90,7 +94,7 @@ class QuestionController extends BaseController
 			exit;
 		}
 
-		$question = Question::get($search->getId(), $args->question);
+		$question = $search->getQuestion($args->question);
 
 		if ($question === false) {
 			Router::redirect();
@@ -112,6 +116,7 @@ class QuestionController extends BaseController
 		$this->setVariable('images', Router::getLink('assets/images'));
 		$this->setVariable('add_options', true);
 		$this->setVariable('options', $question->getOptions());
+		$this->setVariable('link_questions', Router::getLink('pesquisa', $search->getId(), 'editar'));
 		if (Session::issetFlash('edit-question-values')) {
 			$this->setVariable('form', Session::getFlash('edit-question-values'));
 		} else {
@@ -143,7 +148,7 @@ class QuestionController extends BaseController
 			exit;
 		}
 
-		$question = Question::get($search->getId(), $args->question);
+		$question = $search->getQuestion($args->question);
 
 		if ($question === false) {
 			Router::redirect();
@@ -193,7 +198,7 @@ class QuestionController extends BaseController
 			exit;
 		}
 
-		$question = Question::get($search->getId(), $args->question);
+		$question = $search->getQuestion($args->question);
 
 		if ($question === false) {
 			Router::redirect();
@@ -226,7 +231,7 @@ class QuestionController extends BaseController
 			exit;
 		}
 
-		$question = Question::get($search->getId(), $args->question);
+		$question = $search->getQuestion($args->question);
 
 		if ($question === false) {
 			Router::redirect();
@@ -238,7 +243,7 @@ class QuestionController extends BaseController
 		$questions = $search->getQuestions();
 
 		if (count($questions)) {
-			$before = Question::get($search->getId(), $question->getNumber() - 1);
+			$before = $search->getQuestion($question->getNumber() - 1);
 
 			if ($before !== false) {
 				$b_number = $question->getNumber();
@@ -266,7 +271,7 @@ class QuestionController extends BaseController
 			exit;
 		}
 
-		$question = Question::get($search->getId(), $args->question);
+		$question = $search->getQuestion($args->question);
 
 		if ($question === false) {
 			Router::redirect();
@@ -278,7 +283,7 @@ class QuestionController extends BaseController
 		$questions = $search->getQuestions();
 
 		if (count($questions)) {
-			$after = Question::get($search->getId(), $question->getNumber() + 1);
+			$after = $search->getQuestion($question->getNumber() + 1);
 
 			if ($after !== false) {
 				$a_number = $question->getNumber();

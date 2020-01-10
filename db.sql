@@ -6,13 +6,11 @@ SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
-CREATE TABLE `ask` (
+CREATE TABLE `answer` (
   `id` int(11) NOT NULL,
-  `search` int(11) NOT NULL,
-  `question_number` int(11) NOT NULL,
-  `option_number` int(11) NOT NULL,
+  `option` int(11) NOT NULL,
   `user` int(11) NOT NULL,
-  `time` datetime DEFAULT CURRENT_TIMESTAMP
+  `text` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `leader` (
@@ -35,11 +33,11 @@ CREATE TABLE `member` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `option` (
-  `search` int(11) NOT NULL,
-  `question_number` int(11) NOT NULL,
-  `number` int(11) NOT NULL,
-  `text` varchar(50) DEFAULT NULL,
-  `insert` int(1) DEFAULT 0
+  `id` int(11) NOT NULL,
+  `question` int(11) NOT NULL,
+  `number` int(3) NOT NULL,
+  `text` varchar(150) DEFAULT NULL,
+  `insert` int(1) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `point` (
@@ -49,12 +47,13 @@ CREATE TABLE `point` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `question` (
+  `id` int(11) NOT NULL,
   `search` int(11) NOT NULL,
-  `number` int(11) NOT NULL,
-  `text` varchar(100) NOT NULL,
-  `title` varchar(20) DEFAULT NULL,
+  `number` int(3) NOT NULL,
+  `title` varchar(50) DEFAULT NULL,
+  `text` varchar(200) DEFAULT NULL,
   `creation` datetime DEFAULT CURRENT_TIMESTAMP,
-  `type` int(1) DEFAULT 1
+  `type` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `search` (
@@ -65,9 +64,9 @@ CREATE TABLE `search` (
   `name` varchar(30) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-ALTER TABLE `ask`
+ALTER TABLE `answer`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `search` (`search`,`question_number`,`option_number`),
+  ADD KEY `option` (`option`),
   ADD KEY `user` (`user`);
 
 ALTER TABLE `leader`
@@ -78,33 +77,41 @@ ALTER TABLE `member`
   ADD KEY `point` (`point`);
 
 ALTER TABLE `option`
-  ADD PRIMARY KEY (`search`,`question_number`,`number`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `question` (`question`);
 
 ALTER TABLE `point`
   ADD PRIMARY KEY (`id`);
 
 ALTER TABLE `question`
-  ADD PRIMARY KEY (`search`,`number`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `search` (`search`);
 
 ALTER TABLE `search`
   ADD PRIMARY KEY (`id`),
   ADD KEY `point` (`point`);
 
-ALTER TABLE `ask`
+ALTER TABLE `answer`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `member`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
+ALTER TABLE `option`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 ALTER TABLE `point`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `question`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `search`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
-ALTER TABLE `ask`
-  ADD CONSTRAINT `ask_ibfk_1` FOREIGN KEY (`search`,`question_number`,`option_number`) REFERENCES `option` (`search`, `question_number`, `number`),
-  ADD CONSTRAINT `ask_ibfk_2` FOREIGN KEY (`user`) REFERENCES `member` (`id`);
+ALTER TABLE `answer`
+  ADD CONSTRAINT `answer_ibfk_1` FOREIGN KEY (`option`) REFERENCES `option` (`id`),
+  ADD CONSTRAINT `answer_ibfk_2` FOREIGN KEY (`user`) REFERENCES `member` (`id`);
 
 ALTER TABLE `leader`
   ADD CONSTRAINT `leader_ibfk_1` FOREIGN KEY (`id`) REFERENCES `member` (`id`);
@@ -113,7 +120,7 @@ ALTER TABLE `member`
   ADD CONSTRAINT `member_ibfk_1` FOREIGN KEY (`point`) REFERENCES `point` (`id`);
 
 ALTER TABLE `option`
-  ADD CONSTRAINT `option_ibfk_1` FOREIGN KEY (`search`,`question_number`) REFERENCES `question` (`search`, `number`);
+  ADD CONSTRAINT `option_ibfk_1` FOREIGN KEY (`question`) REFERENCES `question` (`id`);
 
 ALTER TABLE `question`
   ADD CONSTRAINT `question_ibfk_1` FOREIGN KEY (`search`) REFERENCES `search` (`id`);

@@ -21,7 +21,7 @@ class OptionController extends BaseController
 			exit;
 		}
 
-		$question = Question::get($search->getId(), $args->question);
+		$question = $search->getQuestion($args->question);
 
 		if ($question === false) {
 			Router::redirect();
@@ -42,8 +42,7 @@ class OptionController extends BaseController
 		}
 
 		$option = new Option();
-		$option->setSearch($search->getId());
-		$option->setQuestionNumber($question->getNumber());
+		$option->setQuestion($question);
 		$option->setNumber($number);
 		$option->setText($text);
 		$option->setInsert($insert);
@@ -73,14 +72,14 @@ class OptionController extends BaseController
 			exit;
 		}
 
-		$question = Question::get($search->getId(), $args->question);
+		$question = $search->getQuestion($args->question);
 
 		if ($question === false) {
 			Router::redirect();
 			exit;
 		}
 
-		$option = Option::get($search->getId(), $question->getNumber(), $args->option);
+		$option = $question->getOption($args->option);
 
 		if ($option === false) {
 			Router::redirect();
@@ -113,14 +112,14 @@ class OptionController extends BaseController
 			exit;
 		}
 
-		$question = Question::get($search->getId(), $args->question);
+		$question = $search->getQuestion($args->question);
 
 		if ($question === false) {
 			Router::redirect();
 			exit;
 		}
 
-		$option = Option::get($search->getId(), $question->getNumber(), $args->option);
+		$option = $question->getOption($args->option);
 
 		if ($option === false) {
 			Router::redirect();
@@ -184,14 +183,14 @@ class OptionController extends BaseController
 			exit;
 		}
 
-		$question = Question::get($search->getId(), $args->question);
+		$question = $search->getQuestion($args->question);
 
 		if ($question === false) {
 			Router::redirect();
 			exit;
 		}
 
-		$option = Option::get($search->getId(), $question->getNumber(), $args->option);
+		$option = $question->getOption($args->option);
 
 		if ($option === false) {
 			Router::redirect();
@@ -230,14 +229,14 @@ class OptionController extends BaseController
 			exit;
 		}
 
-		$question = Question::get($search->getId(), $args->question);
+		$question = $search->getQuestion($args->question);
 
 		if ($question === false) {
 			Router::redirect();
 			exit;
 		}
 
-		$option = Option::get($search->getId(), $question->getNumber(), $args->option);
+		$option = $question->getOption($args->option);
 
 		if ($option === false) {
 			Router::redirect();
@@ -249,7 +248,7 @@ class OptionController extends BaseController
 		$options = $question->getOptions();
 
 		if (count($options)) {
-			$before = Option::get($search->getId(), $question->getNumber(), $option->getNumber() - 1);
+			$before = $question->getOption($option->getNumber() - 1);
 
 			if ($before !== false) {
 				$b_number = $option->getNumber();
@@ -277,14 +276,14 @@ class OptionController extends BaseController
 			exit;
 		}
 
-		$question = Question::get($search->getId(), $args->question);
+		$question = $search->getQuestion($args->question);
 
 		if ($question === false) {
 			Router::redirect();
 			exit;
 		}
 
-		$option = Option::get($search->getId(), $question->getNumber(), $args->option);
+		$option = $question->getOption($args->option);
 
 		if ($option === false) {
 			Router::redirect();
@@ -296,7 +295,7 @@ class OptionController extends BaseController
 		$options = $question->getOptions();
 
 		if (count($options)) {
-			$after = Option::get($search->getId(), $question->getNumber(), $option->getNumber() + 1);
+			$after = $question->getOption($option->getNumber() + 1);
 
 			if ($after !== false) {
 				$a_number = $option->getNumber();

@@ -60,8 +60,19 @@ class Member
 		}
 	}
 	
-	public function getPoint() { return $this->point; }
-	public function setPoint($point) { $this->point = $point; }
+	public function getPoint()
+	{
+		return Point::get($this->point);
+	}
+
+	public function setPoint($point)
+	{
+		if ($point instanceof Point) {
+			$this->point = $point->getId();
+		} else {
+			$this->point = $point;
+		}
+	}
 	
 	public function getRegister() { return $this->register; }
 	public function setRegister($register) { $this->register = $register; }
@@ -211,8 +222,8 @@ class Member
 
 		$result = $db->leader->where( function($row) {
 			return $row->id == $this->id;
-		})->size();
+		});
 
-		return $result > 0;
+		return $result->size() > 0;
 	}
 }

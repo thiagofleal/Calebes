@@ -15,9 +15,15 @@ class UserController extends BaseController
 	{
 		$this->checkLeader();
 		$user = Session::get('user');
-		$point = Point::get($user->getPoint());
+		$point = $user->getPoint();
 		$this->setVariable('title', 'Gerenciar calebes');
-		$members_point = $point->getMembers();
+
+		if ($point === false) {
+			$members_point = array();
+		} else {
+			$members_point = $point->getMembers();
+		}
+
 		$members_null = Member::getNotPoint();
 		$this->setVariable('members', array_merge($members_point, $members_null));
 		$this->render('list-users', 'main-template');

@@ -5,6 +5,7 @@ namespace App\Controllers;
 use Tonight\MVC\Controller;
 use Tonight\MVC\Router;
 use Tonight\Tools\Session;
+use App\Models\Point;
 
 class BaseController extends Controller
 {
@@ -38,17 +39,20 @@ class BaseController extends Controller
 
 	protected function checkLeaderAndPoint($point)
 	{
+		$this->checkLeader();
+		
 		$user = Session::get('user');
+		$user_point = $user->getPoint();
+		
+		if ($user_point !== false) {
+			$user_point = $user_point->getId();
+		}
 
-		if ($user === false) {
-			Router::redirect();
-			exit;
+		if ($point instanceof Point) {
+			$point = $point->getId();
 		}
-		if (!$user->isLeader() && $user->getId() != $id) {
-			Router::redirect();
-			exit;
-		}
-		if ($user->getPoint() != $point) {
+
+		if ($user_point != $point) {
 			Router::redirect();
 			exit;
 		}

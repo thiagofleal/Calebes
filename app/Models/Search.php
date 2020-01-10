@@ -27,8 +27,19 @@ class Search
 	public function getName() { return $this->name; }
 	public function setName($name) { $this->name = $name; }
 
-	public function getPoint() { return $this->point; }
-	public function setPoint($point) { $this->point = $point; }
+	public function getPoint()
+	{
+		return Point::get($this->point);
+	}
+
+	public function setPoint($point)
+	{
+		if ($point instanceof Point) {
+			$this->point = $point->getId();
+		} else {
+			$this->point = $point;
+		}
+	}
 
 	public function getCreation() { return $this->creation; }
 	public function setCreation($creation) { $this->creation = $creation; }
@@ -60,9 +71,24 @@ class Search
 		})->order( function($a, $b) {
 			return intval($a->number) - intval($b->number);
 		}) as $value) {
-			$ret[] = Question::get($value->search, $value->number);
+			$ret[] = Question::get($value->id);
 		}
 		return $ret;
+	}
+
+	public function getQuestion($number)
+	{
+		$db = new DataBase('question');
+
+		$result = $db->question->where( function($row) use($number){
+			return $row->search == $this->id && $row->number == $number;
+		});
+
+		if ($result->size() == 0) {
+			return false;
+		}
+
+		return Question::get($result->get(0)->id);
 	}
 
 	public function insert()
@@ -135,12 +161,6 @@ class Search
 		}
 
 		$result = $result->get(0);
-
-		foreach (Question::getAllFromSearch($result->id) as $question) {
-			if ($question->delete() === false) {
-				return false;
-			}
-		}
 
 		$db->search->removeFirst($result);
 		$db->search->update();
