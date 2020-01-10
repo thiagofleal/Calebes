@@ -51,14 +51,16 @@ class Search
 		return $ret;
 	}
 
-	public static function getAllFromPoint($point_id)
+	public function getQuestions()
 	{
-		$db = new DataBase('search');
+		$db = new DataBase('question');
 		$ret = array();
-		foreach ($db->search->where( function($row) use($point_id) {
-			return $row->point == $point_id;
+		foreach ($db->question->where( function($row) {
+			return $row->search == $this->id;
+		})->order( function($a, $b) {
+			return intval($a->number) - intval($b->number);
 		}) as $value) {
-			$ret[] = self::get($value->id);
+			$ret[] = Question::get($value->search, $value->number);
 		}
 		return $ret;
 	}
@@ -133,6 +135,12 @@ class Search
 		}
 
 		$result = $result->get(0);
+
+		foreach (Question::getAllFromSearch($result->id) as $question) {
+			if ($question->delete() === false) {
+				return false;
+			}
+		}
 
 		$db->search->removeFirst($result);
 		$db->search->update();

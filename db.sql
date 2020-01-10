@@ -38,8 +38,8 @@ CREATE TABLE `option` (
   `search` int(11) NOT NULL,
   `question_number` int(11) NOT NULL,
   `number` int(11) NOT NULL,
-  `type` int(11) NOT NULL,
-  `text` varchar(50) DEFAULT NULL
+  `text` varchar(50) DEFAULT NULL,
+  `insert` int(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `point` (
@@ -52,7 +52,9 @@ CREATE TABLE `question` (
   `search` int(11) NOT NULL,
   `number` int(11) NOT NULL,
   `text` varchar(100) NOT NULL,
-  `creation` datetime DEFAULT CURRENT_TIMESTAMP
+  `title` varchar(20) DEFAULT NULL,
+  `creation` datetime DEFAULT CURRENT_TIMESTAMP,
+  `type` int(1) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `search` (

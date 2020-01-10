@@ -6,14 +6,16 @@ class Question
 {
 	private $search;
 	private $number;
+	private $title;
 	private $text;
 	private $creation;
+	private $type;
 
 	public static function get($search, $number)
 	{
-		$leader = new self();
-		if ($leader->load($search, $number)) {
-			return $leader;
+		$question = new self();
+		if ($question->load($search, $number)) {
+			return $question;
 		} else {
 			return false;
 		}
@@ -27,11 +29,17 @@ class Question
 	public function getNumber() { return $this->number; }
 	public function setNumber($number) { $this->number = $number; }
 
+	public function getTitle() { return $this->title; }
+	public function setTitle($title) { $this->title = $title; }
+
 	public function getText() { return $this->text; }
 	public function setText($text) { $this->text = $text; }
 
 	public function getCreation() { return $this->creation; }
 	public function setCreation($creation) { $this->creation = $creation; }
+
+	public function getType() { return $this->type; }
+	public function setType($type) { $this->type = $type; }
 
 	public static function getAll()
 	{
@@ -43,15 +51,19 @@ class Question
 		return $ret;
 	}
 
-	public static function getAllFromSearch($search_id)
+	public function getOptions()
 	{
-		$db = new DataBase('question');
+		$db = new DataBase('option');
 		$ret = array();
-		foreach ($db->question->where( function($row) use($search_id) {
-			return $row->search == $search_id;
+		
+		foreach ($db->option->where( function($row) {
+			return $row->search == $this->search && $row->question_number == $this->number;
+		})->order( function($a, $b) {
+			return intval($a->number) - intval($b->number);
 		}) as $value) {
-			$ret[] = self::get($value->search, $value->number);
+			$ret[] = Option::get($value->search, $value->question_number, $value->number);
 		}
+
 		return $ret;
 	}
 
@@ -62,8 +74,9 @@ class Question
 		$db->question->append([
 			'search' => $this->search,
 			'number' => $this->number,
+			'title' => $this->title,
 			'text' => $this->text,
-			'creation' => $this->creation
+			'type' => $this->type
 		]);
 		$db->question->update();
 	}
@@ -94,7 +107,7 @@ class Question
 		$db = new DataBase('question');
 
 		$result = $db->question->where( function($row) {
-			return $row->id == $this->id;
+			return $row->search == $this->search && $row->number == $this->number;
 		});
 
 		if ($result->size() == 0) {
@@ -118,7 +131,7 @@ class Question
 		$db = new DataBase('question');
 
 		$result = $db->question->where( function($row) {
-			return $row->id == $this->id;
+			return $row->search == $this->search && $row->number == $this->number;
 		});
 
 		if ($result->size() == 0) {
@@ -127,6 +140,12 @@ class Question
 
 		$result = $result->get(0);
 
+		foreach (Option::getAllFromQuestion($result->search, $result->number) as $option) {
+			if ($option->delete() === false) {
+				return false;
+			}
+		}
+		
 		$db->question->removeFirst($result);
 		$db->question->update();
 

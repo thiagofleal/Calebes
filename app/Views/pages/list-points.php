@@ -11,30 +11,32 @@
 				<th>Alocar</th>
 			</tr>
 		</thead>
+		<tbody>
 <?php foreach ($points as $point): ?>
-		<tr>
-			<td><?= $point->getName() ?></td>
-			<td><?= $point->getAddress() ?></td>
-			<td>
-				<a href="<?= Router::getLink('ponto', $point->getId(), 'editar') ?>" class="btn btn-warning">
-					Editar
-				</a>
-				<a href="<?= Router::getLink('ponto', $point->getId(), 'excluir') ?>" class="btn btn-danger">
-					Excluir
-				</a>
-			</td>
-			<td>
+			<tr>
+				<td><?= $point->getName() ?></td>
+				<td><?= $point->getAddress() ?></td>
+				<td>
+					<a href="<?= Router::getLink('ponto', $point->getId(), 'editar') ?>" class="btn btn-warning">
+						Editar
+					</a>
+					<a href="<?= Router::getLink('ponto', $point->getId(), 'excluir') ?>" class="btn btn-danger">
+						Excluir
+					</a>
+				</td>
+				<td>
 <?php if ($point->getId() == $current_point): ?>
-				<a href="<?= Router::getLink('calebe/ponto', $point->getId(), 'alocar') ?>" class="btn btn-primary">
-					Alocado
-				</a>
+					<a href="" class="btn btn-primary">
+						Alocado
+					</a>
 <?php else: ?>
-				<a href="<?= Router::getLink('calebe/ponto', $point->getId(), 'alocar') ?>" class="btn btn-secondary">
-					Alocar-se
-				</a>
+					<a href="<?= Router::getLink('calebe/ponto', $point->getId(), 'alocar') ?>" class="btn btn-secondary">
+						Alocar-se
+					</a>
 <?php endif; ?>
-			</td>
-		</tr>
+				</td>
+			</tr>
 <?php endforeach; ?>
+		</tbody>
 	</table>
 </div>

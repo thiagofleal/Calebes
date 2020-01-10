@@ -1,3 +1,4 @@
+<?php use Tonight\MVC\Router; ?>
 <div class="container">
 	<?php if ($flash): ?>
 		<div class="alert <?= $alert['type'] ?>">
@@ -17,28 +18,62 @@
 			<input type="text" name="name" id="name" class="form-control" value="<?= $form->name ?? '' ?>" />
 		</div>
 <?php if ($add_questions): ?>
-		<button type="button" class="btn btn-secondary">
+		<a href="<?= $add_question_link ?>" class="btn btn-success">
 			Adicionar pergunta
-		</button>
+		</a>
+		<hr>
 		<table class="table table-borderless table-responsive d-md-table">
-			<tr>
-				<th>#</th>
-				<th>Pergunta</th>
-				<th>Ordenar</th>
-				<th>Ações</th>
-			</tr>
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Pergunta</th>
+					<th>Ordenar</th>
+					<th>Ações</th>
+				</tr>
+			</thead>
+			<tbody>
 <?php foreach ($questions as $question): ?>
-			<td><?= $question->getNumber() ?></td>
-			<td><?= $question->getText() ?></td>
-			<td>
-				<a href=""></a>
-				<a href=""></a>
-			</td>
-			<td>
-				<a href="" class="btn btn-warning">Editar</a>
-				<a href="" class="btn btn-danger">Excluir</a>
-			</td>
+				<tr>
+					<td><?= $question->getNumber() ?></td>
+					<td><?= $question->getTitle() ?></td>
+					<td>
+						<a href="<?=
+							Router::getLink(
+								'pesquisa', $question->getSearch(),
+								'pergunta', $question->getNumber(),
+								'acao/subir'
+							)
+						?>">
+							<img src="<?= $images ?>/arrow-up.png">
+						</a> | <a href="<?=
+							Router::getLink(
+								'pesquisa', $question->getSearch(),
+								'pergunta', $question->getNumber(),
+								'acao/descer'
+							)
+						?>">
+							<img src="<?= $images ?>/arrow-down.png">
+						</a>
+					</td>
+					<td>
+						<a href="<?= Router::getLink(
+								'pesquisa',
+								$question->getSearch(),
+								'pergunta',
+								$question->getNumber(),
+								'editar'
+							) ?>" class="btn btn-warning">Editar</a>
+						<a href="<?= Router::getLink(
+								'pesquisa',
+								$question->getSearch(),
+								'pergunta',
+								$question->getNumber(),
+								'excluir'
+							) ?>" class="btn btn-danger">Excluir</a>
+					</td>
+				</tr>
 <?php endforeach; ?>
+			</tbody>
 		</table>
 <?php endif; ?>
 		<hr>

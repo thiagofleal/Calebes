@@ -38,6 +38,34 @@ class Point
 		return $ret;
 	}
 
+	public function getMembers()
+	{
+		$db = new DataBase('member');
+		$ret = array();
+		
+		foreach ($db->member->where( function($row) {
+			return $row->point == $this->id;
+		}) as $value) {
+			$ret[] = Member::get($value->id);
+		}
+
+		return $ret;
+	}
+
+	public function getResearches()
+	{
+		$db = new DataBase('search');
+		$ret = array();
+		foreach ($db->search->where( function($row) {
+			return $row->point == $this->id;
+		})->order( function($a, $b) {
+			return strtotime($b->creation) - strtotime($a->creation);
+		}) as $value) {
+			$ret[] = Search::get($value->id);
+		}
+		return $ret;
+	}
+
 	public function insert()
 	{
 		$db = new DataBase('point');

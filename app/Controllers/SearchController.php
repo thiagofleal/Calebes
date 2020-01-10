@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use Tonight\MVC\Router;
 use Tonight\Tools\Session;
+use App\Models\Point;
 use App\Models\Search;
 use App\Models\Question;
 
@@ -14,7 +15,8 @@ class SearchController extends BaseController
 		$this->checkLeader();
 		$this->setVariable('title', 'Listar pesquisas');
 		$user = Session::get('user');
-		$this->setVariable('researches', Search::getAllFromPoint($user->getPoint()));
+		$point = Point::get($user->getPoint());
+		$this->setVariable('researches', $point->getResearches());
 		$this->render('list-researches', 'main-template');
 	}
 
@@ -44,14 +46,17 @@ class SearchController extends BaseController
 		$this->checkLeader();
 		$search = new Search();
 		$user = Session::get('user');
+		$point = Point::get($user->getPoint());
 		$search->setPoint($user->getPoint());
 		$search->setName($request->get('name', ''));
 		$search->insert();
-		Session::setFlash('register-search', [
+		Session::setFlash('edit-search', [
 			'type' => 'alert-success',
 			'text' => 'Pesquisa cadastrada com sucesso'
 		]);
-		Router::redirect('pesquisa/cadastrar');
+		$search = $point->getResearches();
+		$search = array_shift($search);
+		Router::redirect('pesquisa', $search->getId(), 'editar');
 	}
 
 	public function edit($args)
@@ -59,7 +64,9 @@ class SearchController extends BaseController
 		$this->checkLeader();
 		$this->setVariable('title', 'Criar pesquisa');
 		$this->setVariable('action', Router::getLink('pesquisa', $args->id, 'acao/editar'));
+		$this->setVariable('images', Router::getLink('assets/images'));
 		$this->setVariable('add_questions', true);
+		$this->setVariable('add_question_link', Router::getLink('pesquisa', $args->id, 'pergunta/adicionar'));
 		$search = Search::get($args->id);
 		if ($search === false) {
 			$this->setVariable('flash', true);
@@ -73,7 +80,7 @@ class SearchController extends BaseController
 			$form->name = $search->getName();
 		}
 		$this->setVariable('form', $form);
-		$this->setVariable('questions', Question::getAllFromSearch($search->getId()));
+		$this->setVariable('questions', $search->getQuestions());
 		if (Session::issetFlash('edit-search')) {
 			$this->setVariable('flash', true);
 			$this->setVariable('alert', Session::getFlash('edit-search'));

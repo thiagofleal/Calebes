@@ -22,7 +22,7 @@ if ($user !== false) {
 <nav class="navbar navbar-expand-md bg-light navbar-light fixed-top">
 	<div class="container">
     <a href="<?= $public ?>" class="navbar-brand">
-    	<img src="<?= $public ?>/assets/images/logo-calebe.min.png" />
+    	<img src="<?= $public ?>assets/images/logo-calebe.min.png" />
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu">
     	<span class="navbar-toggler-icon"></span>

@@ -7,6 +7,7 @@ use Tonight\Tools\Request;
 use Tonight\MVC\Router;
 use App\Models\Member;
 use App\Models\Leader;
+use App\Models\Point;
 
 class UserController extends BaseController
 {
@@ -14,8 +15,11 @@ class UserController extends BaseController
 	{
 		$this->checkLeader();
 		$user = Session::get('user');
+		$point = Point::get($user->getPoint());
 		$this->setVariable('title', 'Gerenciar calebes');
-		$this->setVariable('members', Member::getFromPointOrNull($user->getPoint()));
+		$members_point = $point->getMembers();
+		$members_null = Member::getNotPoint();
+		$this->setVariable('members', array_merge($members_point, $members_null));
 		$this->render('list-users', 'main-template');
 	}
 
@@ -35,10 +39,10 @@ class UserController extends BaseController
 			$this->setVariable('alert', Session::getFlash('register-user'));
 		} else {
 			$this->setVariable('flash', false);
-			$this->setVariable('alert', array(
+			$this->setVariable('alert', [
 				'type' => '',
 				'text' => ''
-			));
+			]);
 		}
 		$this->render('form-user', 'main-template');
 	}
@@ -147,10 +151,10 @@ class UserController extends BaseController
 			$this->setVariable('alert', Session::getFlash('edit-user'));
 		} else {
 			$this->setVariable('flash', false);
-			$this->setVariable('alert', array(
+			$this->setVariable('alert', [
 				'type' => '',
 				'text' => ''
-			));
+			]);
 		}
 		$this->render('form-user', 'main-template');
 	}

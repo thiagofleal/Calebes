@@ -31,6 +31,11 @@ class Leader
 		return $ret;
 	}
 
+	public function getMember()
+	{
+		return Member::get($this->id);
+	}
+
 	public function insert()
 	{
 		$db = new DataBase('leader');

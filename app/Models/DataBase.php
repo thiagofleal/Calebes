@@ -26,11 +26,11 @@ class DataBase extends MySQL
 		}
 		catch(PDOException $e)
 		{
-			Router::redirect('erro', 'Conexão com banco de dados', 'mensagem', $e->getMessage());
+			Router::redirect('erro', 'Conexão com banco de dados', $e->getMessage());
 		}
 		catch(Exception $e)
 		{
-			Router::redirect('erro', 'Erro interno', 'mensagem', $e->getMessage());
+			Router::redirect('erro', 'Erro interno', $e->getMessage());
 		}
 	}
 }
