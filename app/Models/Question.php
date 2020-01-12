@@ -96,6 +96,14 @@ class Question
 		return Option::get($result->get(0)->id);
 	}
 
+	public function addOption(Option $option)
+	{
+		if ($option) {
+			$option->setQuestion($this);
+			$option->insert();
+		}
+	}
+
 	public function insert()
 	{
 		$db = new DataBase('question');

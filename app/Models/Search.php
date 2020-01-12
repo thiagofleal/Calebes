@@ -12,9 +12,9 @@ class Search
 
 	public static function get($id)
 	{
-		$leader = new self();
-		if ($leader->load($id)) {
-			return $leader;
+		$search = new self();
+		if ($search->load($id)) {
+			return $search;
 		} else {
 			return false;
 		}
@@ -89,6 +89,34 @@ class Search
 		}
 
 		return Question::get($result->get(0)->id);
+	}
+
+	public function addQuestion(Question $question)
+	{
+		if ($question) {
+			$question->setSearch($this);
+			$question->insert();
+		}
+	}
+
+	public function getAnswers()
+	{
+		$db = new DataBase('answer');
+		$ret = array();
+		foreach ($db->answer->where( function($row) {
+			return $row->search == $this->id;
+		}) as $value) {
+			$ret[] = Answer::get($value->id);
+		}
+		return $ret;
+	}
+
+	public function addAnswer(Answer $answer)
+	{
+		if ($answer) {
+			$answer->setSearch($this);
+			$answer->insert();
+		}
 	}
 
 	public function insert()

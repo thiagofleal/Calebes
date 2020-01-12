@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use stdClass;
 use Tonight\MVC\Router;
 use Tonight\Tools\Session;
 use App\Models\Point;
@@ -16,7 +17,14 @@ class SearchController extends BaseController
 		$this->setVariable('title', 'Listar pesquisas');
 		$user = Session::get('user');
 		$point = $user->getPoint();
-		$this->setVariable('researches', $point->getResearches());
+
+		if ($point === false) {
+			$researches = array();
+		} else {
+			$researches = $point->getResearches();
+		}
+
+		$this->setVariable('researches', $researches);
 		$this->render('list-researches', 'main-template');
 	}
 
@@ -26,7 +34,7 @@ class SearchController extends BaseController
 		$this->setVariable('title', 'Criar pesquisa');
 		$this->setVariable('action', Router::getLink('pesquisa/acao/cadastrar'));
 		$this->setVariable('add_questions', false);
-		$this->setVariable('form', new \stdClass);
+		$this->setVariable('form', new stdClass);
 		$this->setVariable('questions', array());
 		if (Session::issetFlash('register-search')) {
 			$this->setVariable('flash', true);
@@ -84,7 +92,7 @@ class SearchController extends BaseController
 			]);
 			exit;
 		} else {
-			$form = new \stdClass;
+			$form = new stdClass;
 			$form->name = $search->getName();
 		}
 		

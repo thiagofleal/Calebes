@@ -218,12 +218,29 @@ class Member
 
 	public function isLeader()
 	{
-		$db = new DataBase('leader');
+		$leader = Leader::get($this->id);
+		return $leader !== false;
+	}
 
-		$result = $db->leader->where( function($row) {
-			return $row->id == $this->id;
-		});
+	public function addLeader()
+	{
+		if ($this->isLeader()) {
+			return false;
+		}
 
-		return $result->size() > 0;
+		$leader = new Leader();
+		$leader->setId($this->id);
+		return $leader->insert();
+	}
+
+	public function removeLeader()
+	{
+		$leader = Leader::get($this->id);
+
+		if ($leader === false) {
+			return false;
+		}
+
+		return $leader->delete();
 	}
 }

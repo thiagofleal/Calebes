@@ -52,6 +52,14 @@ class Point
 		return $ret;
 	}
 
+	public function addMember(Member $member)
+	{
+		if ($member) {
+			$member->setPoint($this);
+			$member->insert();
+		}
+	}
+
 	public function getResearches()
 	{
 		$db = new DataBase('search');
@@ -64,6 +72,14 @@ class Point
 			$ret[] = Search::get($value->id);
 		}
 		return $ret;
+	}
+
+	public function addSearch(Search $search)
+	{
+		if ($search) {
+			$search->setPoint($this);
+			$search->insert();
+		}
 	}
 
 	public function insert()
