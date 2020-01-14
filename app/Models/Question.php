@@ -100,8 +100,9 @@ class Question
 	{
 		if ($option) {
 			$option->setQuestion($this);
-			$option->insert();
+			return $option->insert();
 		}
+		return false;
 	}
 
 	public function insert()
@@ -173,6 +174,12 @@ class Question
 
 		if ($result->size() == 0) {
 			return false;
+		}
+
+		foreach ($this->getOptions() as $option) {
+			if ($option->delete() === false) {
+				return false;
+			}
 		}
 
 		$result = $result->get(0);

@@ -96,7 +96,9 @@ class Search
 		if ($question) {
 			$question->setSearch($this);
 			$question->insert();
+			return true;
 		}
+		return false;
 	}
 
 	public function getAnswers()
@@ -116,7 +118,9 @@ class Search
 		if ($answer) {
 			$answer->setSearch($this);
 			$answer->insert();
+			return true;
 		}
+		return false;
 	}
 
 	public function insert()
@@ -186,6 +190,18 @@ class Search
 
 		if ($result->size() == 0) {
 			return false;
+		}
+
+		foreach ($this->getQuestions() as $question) {
+			if ($question->delete() === false) {
+				return false;
+			}
+		}
+
+		foreach ($this->getAnswers() as $answer) {
+			if ($answer->delete() === false) {
+				return false;
+			}
 		}
 
 		$result = $result->get(0);

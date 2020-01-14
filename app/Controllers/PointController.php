@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use stdClass;
 use Tonight\MVC\Router;
 use Tonight\Tools\Session;
 use App\Models\Point;
@@ -44,7 +45,7 @@ class PointController extends BaseController
 		if (Session::issetFlash('register-point-values')) {
 			$this->setVariable('form', Session::getFlash('register-point-values'));
 		} else {
-			$this->setVariable('form', new \stdClass);
+			$this->setVariable('form', new stdClass);
 		}
 		$this->render('form-point', 'main-template');
 	}
@@ -80,7 +81,7 @@ class PointController extends BaseController
 			'type' => 'alert-success',
 			'text' => 'Ponto cadastrado com sucesso'
 		]);
-		Session::setFlash('register-point-values', new \stdClass);
+		Session::setFlash('register-point-values', new stdClass);
 		Router::redirect('ponto', 'cadastrar');
 	}
 
@@ -99,7 +100,7 @@ class PointController extends BaseController
 				'text' => ''
 			]);
 		}
-		$form = new \stdClass;
+		$form = new stdClass;
 		$point = new Point();
 		$point->load($args->id);
 		$form->name = $point->getName();
@@ -111,8 +112,7 @@ class PointController extends BaseController
 	public function editAction($args, $request)
 	{
 		$this->checkLeader();
-		$point = new Point();
-
+		
 		if (empty($request->name)) {
 			Session::setFlash('edit-point', [
 				'type' => 'alert-warning',
@@ -132,7 +132,18 @@ class PointController extends BaseController
 			exit;
 		}
 
-		$point->load($args->id);
+		$point = Point::get($args->id);
+
+		if ($point === false) {
+			Session::setFlash('edit-point', [
+				'type' => 'alert-danger',
+				'text' => 'Ponto não encontrado'
+			]);
+			Session::setFlash('edit-point-values', $request);
+			Router::redirect('ponto', $args->id, 'editar');
+			exit;
+		}
+
 		$point->setName($request->name);
 		$point->setAddress($request->address);
 		if ($point->update()){
@@ -140,7 +151,7 @@ class PointController extends BaseController
 				'type' => 'alert-success',
 				'text' => 'Ponto atualizado com sucesso'
 			]);
-			Session::setFlash('edit-point-values', new \stdClass);
+			Session::setFlash('edit-point-values', new stdClass);
 		} else {
 			Session::setFlash('edit-point', [
 				'type' => 'alert-danger',
@@ -168,9 +179,13 @@ class PointController extends BaseController
 	public function addUser($args)
 	{
 		$this->checkLeader();
-		$user = Session::get('user');
-		$user->setPoint($args->id);
-		$user->update();
+		$point = Point::get($args->id);
+
+		if ($point !== false) {
+			$user = Session::get('user');
+			$user->setPoint($point);
+			$user->update();
+		}
 		Router::redirect('pontos');
 	}
 }

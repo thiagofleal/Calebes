@@ -54,17 +54,27 @@ class SearchController extends BaseController
 		$this->checkLeader();
 		$search = new Search();
 		$user = Session::get('user');
-		$point = Point::get($user->getPoint());
-		$search->setPoint($user->getPoint());
-		$search->setName($request->get('name', ''));
-		$search->insert();
-		Session::setFlash('edit-search', [
-			'type' => 'alert-success',
-			'text' => 'Pesquisa cadastrada com sucesso'
-		]);
-		$search = $point->getResearches();
-		$search = array_shift($search);
-		Router::redirect('pesquisa', $search->getId(), 'editar');
+		$point = $user->getPoint();
+
+		if ($point === false) {
+			Session::setFlash('register-search', [
+				'type' => 'alert-danger',
+				'text' => 'É necessário estar alocado em um ponto para criar uma pesquisa'
+			]);
+		} else {
+			$search->setName($request->get('name', ''));
+			if ($point->addSearch($search)) {
+				Session::setFlash('edit-search', [
+					'type' => 'alert-success',
+					'text' => 'Pesquisa cadastrada com sucesso'
+				]);
+				$researches = $point->getResearches();
+				$last = array_shift($researches);
+				Router::redirect('pesquisa', $last->getId(), 'editar');
+				exit;
+			}
+		}
+		Router::redirect('pesquisa/cadastrar');
 	}
 
 	public function edit($args)

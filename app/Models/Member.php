@@ -128,7 +128,7 @@ class Member
 		$db = new DataBase('member');
 
 		$result = $db->member->where( function($row) {
-			return $row->document == $this->document;
+			return $row->document == $this->document || $row->email == $this->email;
 		});
 
 		if ($result->size() > 0) {
@@ -175,6 +175,14 @@ class Member
 	public function update()
 	{
 		$db = new DataBase('member');
+
+		$result = $db->member->where( function($row) {
+			return $row->document == $this->document || $row->email == $this->email;
+		});
+
+		if ($result->size() > 0) {
+			return false;
+		}
 
 		$result = $db->member->where( function($row) {
 			return $row->id == $this->id;

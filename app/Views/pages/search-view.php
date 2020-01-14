@@ -19,20 +19,45 @@
 <?php foreach ($question->getOptions() as $option): ?>
 <?php if ($question->getType() == 1): ?>
 				<label><?= $option->getText() ?></label>
-				<textarea name="question_<?= $question->getNumber() ?>_option_<?= $option->getNumber() ?>" class="form-control"></textarea>
+				<textarea name="question_<?= $question->getNumber() ?>_option_<?= $option->getNumber() ?>"
+					class="form-control"></textarea>
 <?php endif; ?>
 <?php if ($question->getType() == 2): ?>
-				<input type="radio" name="question_<?= $question->getNumber() ?>" class="enable-on-mark" data-enable="#option_<?= $option->getNumber() ?>_text">
-				<?= $option->getText() ?><br>
+				<input type="radio"
+				name="answer[<?= $question->getNumber() ?>]['value']"
+				id="question_<?= $question->getNumber() ?>_option_<?= $option->getNumber() ?>"
+				class="enable-on-mark"
+				data-enable="#question_<?= $question->getNumber() ?>_option_<?= $option->getNumber() ?>_text" />
+				<label
+				for="question_<?= $question->getNumber() ?>_option_<?= $option->getNumber() ?>" />
+					<?= $option->getText() ?>
+				</label>
+				<br>
 <?php if ($option->getInsert()): ?>
-				<input type="text" name="option_<?= $option->getNumber() ?>_text" class="form-control" id="option_<?= $option->getNumber() ?>_text" disabled="disabled">
+				<input type="text"
+				name="answer[<?= $question->getNumber() ?>]['text'][<?= $option->getNumber() ?>]"
+				class="form-control"
+				id="question_<?= $question->getNumber() ?>_option_<?= $option->getNumber() ?>_text"
+				disabled="disabled" />
 <?php endif; ?>
 <?php endif; ?>
 <?php if ($question->getType() == 3): ?>
-				<input type="checkbox" name="question_<?= $question->getNumber() ?>_option_<?= $option->getNumber() ?>" class="enable-on-mark" data-enable="#"question_<?= $question->getNumber() ?>_option_<?= $option->getNumber() ?>"">
-				<?= $option->getText() ?><br>
+				<input type="checkbox"
+				name="answer[<?= $question->getNumber() ?>]['value'][<?= $option->getNumber() ?>]"
+				id="question_<?= $question->getNumber() ?>_option_<?= $option->getNumber() ?>"
+				class="enable-on-mark"
+				data-enable="#question_<?= $question->getNumber() ?>_option_<?= $option->getNumber() ?>_text" />
+				<label
+				for="question_<?= $question->getNumber() ?>_option_<?= $option->getNumber() ?>">
+					<?= $option->getText() ?>
+				</label>
+				<br>
 <?php if ($option->getInsert()): ?>
-				<input type="text" name="option_<?= $option->getNumber() ?>_text" class="form-control" id="question_<?= $question->getNumber() ?>_option_<?= $option->getNumber() ?>" disabled="disabled">
+				<input type="text"
+				name="answer[<?= $option->getNumber() ?>]['text']"
+				class="form-control"
+				id="question_<?= $question->getNumber() ?>_option_<?= $option->getNumber() ?>_text"
+				disabled="disabled" />
 <?php endif; ?>
 <?php endif; ?>
 <?php endforeach; ?>

@@ -42,12 +42,11 @@ class OptionController extends BaseController
 		}
 
 		$option = new Option();
-		$option->setQuestion($question);
 		$option->setNumber($number);
 		$option->setText($text);
 		$option->setInsert($insert);
 
-		if ($option->insert() === false) {
+		if ($question->addOption($option) === false) {
 			Session::setFlash('edit-question', [
 				'type' => 'alert-danger',
 				'text' => 'Esta pergunta já possui uma resposta com esse número'

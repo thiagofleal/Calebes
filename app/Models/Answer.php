@@ -81,7 +81,9 @@ class Answer
 		if ($option) {
 			$option->setAnswer($this);
 			$option->insert();
+			return true;
 		}
+		return false;
 	}
 
 	public function insert()
@@ -151,6 +153,12 @@ class Answer
 
 		if ($result->size() == 0) {
 			return false;
+		}
+
+		foreach ($this->getOptions() as $option) {
+			if ($option->delete() === false) {
+				return false;
+			}
 		}
 
 		$result = $result->get(0);

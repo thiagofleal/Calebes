@@ -30,7 +30,7 @@
 				</a>
 <?php else: ?>
 				<a href="<?= Router::getLink('ponto/calebe', $member->getId(), 'desalocar') ?>" class="btn btn-secondary">
-					Desalocar do ponto
+					Remover do ponto
 				</a>
 <?php endif; ?>
 <?php if ($member->isLeader()): ?>

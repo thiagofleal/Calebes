@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use stdClass;
 use Tonight\Tools\Session;
 use Tonight\Tools\Request;
 use Tonight\MVC\Router;
@@ -38,7 +39,7 @@ class UserController extends BaseController
 		if (Session::issetFlash('register-user-values')) {
 			$this->setVariable('form', Session::getFlash('register-user-values'));
 		} else {
-			$this->setVariable('form', new \stdClass);
+			$this->setVariable('form', new stdClass);
 		}
 		if (Session::issetFlash('register-user')) {
 			$this->setVariable('flash', true);
@@ -56,6 +57,7 @@ class UserController extends BaseController
 	public function registerAction($request)
 	{
 		$this->checkLeader();
+		$user = Session::get('user');
 		$member = new Member();
 
 		Session::setFlash('register-user-values', $request);
@@ -106,7 +108,6 @@ class UserController extends BaseController
 			$member->setEmail($request->get('email', ''));
 			$member->setTshirt_size($request->get('tshirt_size', ''));
 			$member->setPassword($request->password);
-			$user = Session::get('user');
 			$member->setPoint($user->getPoint());
 
 			if ($member->insert()) {
@@ -137,7 +138,7 @@ class UserController extends BaseController
 		} else {
 			$member = Member::get($args->id);
 			if ($member !== false) {
-				$form = new \stdClass;
+				$form = new stdClass;
 				$form->name = $member->getName();
 				$form->birth = $member->getBirth();
 				$form->address = $member->getAddress();
@@ -147,7 +148,7 @@ class UserController extends BaseController
 				$form->document = $member->getDocument();
 				$form->document_type = $member->getDocument_type();
 			} else {
-				$form = new \stdClass;
+				$form = new stdClass;
 			}
 		}
 
@@ -243,10 +244,10 @@ class UserController extends BaseController
 	public function addLeader($args)
 	{
 		$this->checkLeader();
-		if (Member::get($args->id)) {
-			$leader = new Leader();
-			$leader->setId($args->id);
-			$leader->insert();
+		$member = Member::get($args->id);
+
+		if ($member !== false) {
+			$member->addLeader();
 		}
 		Router::redirect('calebes');
 	}
@@ -254,9 +255,10 @@ class UserController extends BaseController
 	public function removeLeader($args)
 	{
 		$this->checkLeader();
-		$leader = Leader::get($args->id);
-		if ($leader !== false) {
-			$leader->delete();
+		$member = Member::get($args->id);
+
+		if ($member !== false) {
+			$member->removeLeader();
 		}
 		Router::redirect('calebes');
 	}
@@ -264,10 +266,12 @@ class UserController extends BaseController
 	public function addPoint($args)
 	{
 		$this->checkLeader();
-		$member = Member::get($args->id);
 		$user = Session::get('user');
-		if ($member !== false) {
-			$member->setPoint($user->getPoint());
+		$member = Member::get($args->id);
+		$point = $user->getPoint();
+
+		if ($member !== false && $point !== false) {
+			$member->setPoint($point);
 			$member->update();
 		}
 		Router::redirect('calebes');
@@ -277,6 +281,7 @@ class UserController extends BaseController
 	{
 		$this->checkLeader();
 		$member = Member::get($args->id);
+		
 		if ($member !== false) {
 			$member->setPoint('');
 			$member->update();

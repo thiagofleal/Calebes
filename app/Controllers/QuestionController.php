@@ -75,13 +75,18 @@ class QuestionController extends BaseController
 		$question->setTitle($title);
 		$question->setText($text);
 		$question->setType($type);
-		$question->setSearch($search->getId());
 		$question->setNumber($last_question + 1);
-		$question->insert();
-		Session::setFlash('edit-question', [
-			'type' => 'alert-success',
-			'text' => 'Pergunta inserida com sucesso'
-		]);
+		if ($search->addQuestion($question)) {
+			Session::setFlash('edit-question', [
+				'type' => 'alert-success',
+				'text' => 'Pergunta inserida com sucesso'
+			]);
+		} else {
+			Session::setFlash('edit-question', [
+				'type' => 'alert-danger',
+				'text' => 'Erro ao inserir pergunta'
+			]);
+		}
 		Router::redirect('pesquisa', $search->getId(), 'pergunta', $question->getNumber(), 'editar');
 	}
 

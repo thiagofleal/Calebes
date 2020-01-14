@@ -56,8 +56,10 @@ class Point
 	{
 		if ($member) {
 			$member->setPoint($this);
-			$member->insert();
+			return $member->insert();
 		}
+		
+		return false;
 	}
 
 	public function getResearches()
@@ -79,7 +81,9 @@ class Point
 		if ($search) {
 			$search->setPoint($this);
 			$search->insert();
+			return true;
 		}
+		return false;
 	}
 
 	public function insert()

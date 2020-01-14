@@ -4,10 +4,14 @@ $(function() {
 	});
 	$('.enable-on-mark').on('change', function() {
 		var enable = $(this).data('enable');
-		$(enable).attr("disabled", true);
+
+		for(var item in $('.enable-on-mark').toArray()) {
+			var disable = $(item).data('enable');
+			$(disable).attr("disabled", "disabled");
+		}
 
 		if ($(this).is(":checked")) {
-			$(enable).attr("disabled", false);
+			$(enable).removeAttr("disabled");
 		}
 	});
 });

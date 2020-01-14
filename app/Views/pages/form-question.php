@@ -15,7 +15,7 @@
 					Título
 				</label>
 			</div>
-			<input type="text" id="title" name="title" class="form-control" maxlength="20" value="<?= $form->title ?? '' ?>" />
+			<input type="text" id="title" name="title" class="form-control" maxlength="50" value="<?= $form->title ?? '' ?>" />
 		</div>
 		<textarea name="text" class="form-control mb-3" maxlength="100" rows="3" required="required"><?= $form->text ?? '' ?></textarea>
 		<div class="input-group mb-3">
@@ -44,7 +44,7 @@
 			Cancelar
 		</button>
 		<a href="<?= $link_questions ?>" class="btn btn-secondary">
-			Editar pergunta
+			Editar pesquisa
 		</a>
 	</form>
 <?php if ($add_options): ?>
