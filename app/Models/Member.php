@@ -180,7 +180,7 @@ class Member
 			return $row->document == $this->document || $row->email == $this->email;
 		});
 
-		if ($result->size() > 0) {
+		if ($result->size() > 1) {
 			return false;
 		}
 

@@ -2,24 +2,26 @@
 
 namespace App\Models;
 
+use PDO;
+use Exception;
+use PDOException;
 use Tonight\Data\MySQL;
 use Tonight\MVC\Router;
-use \PDO;
-use \PDOException;
-use \Exception;
 
 class DataBase extends MySQL
 {
 	public function __construct($fields)
 	{
+		global $dbconfig;
+
 		try
 		{
 			$con = array(
-				'dbname' => 'caleb_mission',
-				'host' => 'localhost'
+				'dbname' => $dbconfig->name,
+				'host' => $dbconfig->host
 			);
-			$user = 'root';
-			$pass = '';
+			$user = $dbconfig->user;
+			$pass = $dbconfig->pass;
 			parent::__construct($con, $user, $pass);
 			$this->start($fields);
 			$this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

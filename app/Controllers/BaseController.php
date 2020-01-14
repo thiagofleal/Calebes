@@ -9,7 +9,7 @@ use App\Models\Point;
 
 class BaseController extends Controller
 {
-	protected function checkLeader()
+	protected function checkLogged()
 	{
 		$user = Session::get('user');
 
@@ -17,31 +17,35 @@ class BaseController extends Controller
 			Router::redirect();
 			exit;
 		}
+
+		return $user;
+	}
+
+	protected function checkLeader()
+	{
+		$user = $this->checkLogged();
+
 		if (!$user->isLeader()) {
 			Router::redirect();
 			exit;
 		}
+
+		return $user;
 	}
 
 	protected function checkLeaderOrSelf($id)
 	{
-		$user = Session::get('user');
+		$user = $this->checkLogged();
 
-		if ($user === false) {
-			Router::redirect();
-			exit;
-		}
 		if (!$user->isLeader() && $user->getId() != $id) {
 			Router::redirect();
 			exit;
 		}
 	}
 
-	protected function checkLeaderAndPoint($point)
+	protected function checkPoint($point)
 	{
-		$this->checkLeader();
-		
-		$user = Session::get('user');
+		$user = $this->checkLogged();
 		$user_point = $user->getPoint();
 		
 		if ($user_point !== false) {
@@ -56,5 +60,11 @@ class BaseController extends Controller
 			Router::redirect();
 			exit;
 		}
+	}
+
+	protected function checkLeaderAndPoint($point)
+	{
+		$this->checkLeader();
+		$this->checkPoint($point);
 	}
 }

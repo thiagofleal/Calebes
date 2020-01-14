@@ -183,6 +183,8 @@ class SearchController extends BaseController
 			Router::redirect();
 		}
 
+		$this->checkPoint($search->getPoint());
+
 		$this->setVariable('title', $search->getName());
 		$this->setVariable('questions', $search->getQuestions());
 		if (Session::issetFlash('open-search')) {
