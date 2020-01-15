@@ -32,7 +32,7 @@ class SearchController extends BaseController
 	{
 		$this->checkLeader();
 		$this->setVariable('title', 'Criar pesquisa');
-		$this->setVariable('action', Router::getLink('pesquisa/acao/cadastrar'));
+		$this->setVariable('action', Router::getLink('pesquisas/acao/cadastrar'));
 		$this->setVariable('add_questions', false);
 		$this->setVariable('form', new stdClass);
 		$this->setVariable('questions', array());
@@ -70,11 +70,11 @@ class SearchController extends BaseController
 				]);
 				$researches = $point->getResearches();
 				$last = array_shift($researches);
-				Router::redirect('pesquisa', $last->getId(), 'editar');
+				Router::redirect('pesquisas', $last->getId(), 'editar');
 				exit;
 			}
 		}
-		Router::redirect('pesquisa/cadastrar');
+		Router::redirect('pesquisas/cadastrar');
 	}
 
 	public function edit($args)
@@ -88,11 +88,13 @@ class SearchController extends BaseController
 		$this->checkLeaderAndPoint($search->getPoint());
 		
 		$this->setVariable('title', 'Editar pesquisa');
-		$this->setVariable('action', Router::getLink('pesquisa', $args->id, 'acao/editar'));
+		$this->setVariable('action', Router::getLink('pesquisas', $args->id, 'acao/editar'));
 		$this->setVariable('images', Router::getLink('assets/images'));
-		$this->setVariable('view_link', Router::getLink('pesquisa', $search->getId(), 'abrir'));
+		$this->setVariable('view_link', Router::getLink('pesquisas', $search->getId(), 'abrir'));
 		$this->setVariable('add_questions', true);
-		$this->setVariable('add_question_link', Router::getLink('pesquisa', $args->id, 'pergunta/adicionar'));
+		$this->setVariable('add_question_link', Router::getLink(
+			'pesquisas', $args->id, 'perguntas/adicionar'
+		));
 		
 		if ($search === false) {
 			$this->setVariable('flash', true);
@@ -146,7 +148,7 @@ class SearchController extends BaseController
 				'text' => 'Pesquisa atualizada com sucesso'
 			]);
 		}
-		Router::redirect('pesquisa', $args->id, 'editar');
+		Router::redirect('pesquisas', $args->id, 'editar');
 	}
 
 	public function delete($args)
@@ -187,6 +189,7 @@ class SearchController extends BaseController
 
 		$this->setVariable('title', $search->getName());
 		$this->setVariable('questions', $search->getQuestions());
+		$this->setVariable('action', Router::getLink('pesquisas', $search->getId(), 'acao/responder'));
 		if (Session::issetFlash('open-search')) {
 			$this->setVariable('flash', true);
 			$this->setVariable('alert', Session::getFlash('open-search'));

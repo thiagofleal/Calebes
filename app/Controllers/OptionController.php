@@ -58,7 +58,7 @@ class OptionController extends BaseController
 			]);
 		}
 		Router::redirect(
-			'pesquisa', $search->getId(), 'pergunta', $question->getNumber(), 'editar'
+			'pesquisas', $search->getId(), 'perguntas', $question->getNumber(), 'editar'
 		);
 	}
 
@@ -98,7 +98,7 @@ class OptionController extends BaseController
 		}
 
 		Router::redirect(
-			'pesquisa', $search->getId(), 'pergunta', $question->getNumber(), 'editar'
+			'pesquisas', $search->getId(), 'perguntas', $question->getNumber(), 'editar'
 		);
 	}
 
@@ -129,7 +129,7 @@ class OptionController extends BaseController
 		$this->setVariable('title', 'Editar pergunta');
 		$this->setVariable(
 			'action', Router::getLink(
-				'pesquisa', $search->getId(), 'pergunta', $question->getNumber(), 'acao/editar'
+				'pesquisas', $search->getId(), 'perguntas', $question->getNumber(), 'acao/editar'
 			)
 		);
 		$this->setVariable(
@@ -215,7 +215,7 @@ class OptionController extends BaseController
 			]);
 		}
 		Router::redirect(
-			'pesquisa', $search->getId(), 'pergunta', $question->getNumber(), 'editar'
+			'pesquisas', $search->getId(), 'perguntas', $question->getNumber(), 'editar'
 		);
 	}
 
@@ -262,7 +262,7 @@ class OptionController extends BaseController
 		}
 
 		Router::redirect(
-			'pesquisa', $search->getId(), 'pergunta', $question->getNumber(), 'editar'
+			'pesquisas', $search->getId(), 'perguntas', $question->getNumber(), 'editar'
 		);
 	}
 
@@ -309,7 +309,7 @@ class OptionController extends BaseController
 		}
 
 		Router::redirect(
-			'pesquisa', $search->getId(), 'pergunta', $question->getNumber(), 'editar'
+			'pesquisas', $search->getId(), 'perguntas', $question->getNumber(), 'editar'
 		);
 	}
 }

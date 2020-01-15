@@ -177,10 +177,12 @@ class Member
 		$db = new DataBase('member');
 
 		$result = $db->member->where( function($row) {
-			return $row->document == $this->document || $row->email == $this->email;
+			return
+				($row->document == $this->document || $row->email == $this->email)
+				&& $row->id != $this->id;
 		});
 
-		if ($result->size() > 1) {
+		if ($result->size() > 0) {
 			return false;
 		}
 

@@ -21,7 +21,7 @@
 		<a href="<?= $add_question_link ?>" class="btn btn-success">
 			Adicionar pergunta
 		</a>
-		<a href="<?= $view_link ?>" class="btn btn-info">
+		<a href="<?= $view_link ?>" class="btn btn-info" target="_blank">
 			Visualizar
 		</a>
 		<hr>
@@ -42,7 +42,7 @@
 					<td>
 						<a href="<?=
 							Router::getLink(
-								'pesquisa', $question->getSearch()->getId(),
+								'pesquisas', $question->getSearch()->getId(),
 								'pergunta', $question->getNumber(),
 								'acao/subir'
 							)
@@ -50,7 +50,7 @@
 							<img src="<?= $images ?>/arrow-up.png">
 						</a> | <a href="<?=
 							Router::getLink(
-								'pesquisa', $question->getSearch()->getId(),
+								'pesquisas', $question->getSearch()->getId(),
 								'pergunta', $question->getNumber(),
 								'acao/descer'
 							)
@@ -60,16 +60,16 @@
 					</td>
 					<td>
 						<a href="<?= Router::getLink(
-								'pesquisa',
+								'pesquisas',
 								$question->getSearch()->getId(),
-								'pergunta',
+								'perguntas',
 								$question->getNumber(),
 								'editar'
 							) ?>" class="btn btn-warning">Editar</a>
 						<a href="<?= Router::getLink(
-								'pesquisa',
+								'pesquisas',
 								$question->getSearch()->getId(),
-								'pergunta',
+								'perguntas',
 								$question->getNumber(),
 								'excluir'
 							) ?>" class="btn btn-danger">Excluir</a>

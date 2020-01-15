@@ -34,7 +34,7 @@ class UserController extends BaseController
 	{
 		$this->checkLeader();
 		$this->setVariable('title', 'Cadastrar Calebe');
-		$this->setVariable('action', Router::getLink('calebe/acao/cadastrar'));
+		$this->setVariable('action', Router::getLink('membros/acao/cadastrar'));
 		$this->setVariable('require_pass', true);
 		if (Session::issetFlash('register-user-values')) {
 			$this->setVariable('form', Session::getFlash('register-user-values'));
@@ -123,14 +123,14 @@ class UserController extends BaseController
 			}
 		}
 
-		Router::redirect('calebe/cadastrar');
+		Router::redirect('membros/cadastrar');
 	}
 
 	public function edit($args)
 	{
 		$this->checkLeaderOrSelf($args->id);
 		$this->setVariable('title', 'Editar Calebe');
-		$this->setVariable('action', Router::getLink('calebe', $args->id, 'acao/editar'));
+		$this->setVariable('action', Router::getLink('membros', $args->id, 'acao/editar'));
 		$this->setVariable('require_pass', false);
 		
 		if (Session::issetFlash('register-user-values')) {
@@ -228,7 +228,7 @@ class UserController extends BaseController
 			}
 		}
 
-		Router::redirect('calebe', $args->id, 'editar');
+		Router::redirect('membros', $args->id, 'editar');
 	}
 
 	public function delete($args)
@@ -238,7 +238,7 @@ class UserController extends BaseController
 		if ($member !== false) {
 			$member->delete();
 		}
-		Router::redirect('calebes');
+		Router::redirect('membros');
 	}
 
 	public function addLeader($args)
@@ -249,7 +249,7 @@ class UserController extends BaseController
 		if ($member !== false) {
 			$member->addLeader();
 		}
-		Router::redirect('calebes');
+		Router::redirect('membros');
 	}
 
 	public function removeLeader($args)
@@ -260,7 +260,7 @@ class UserController extends BaseController
 		if ($member !== false) {
 			$member->removeLeader();
 		}
-		Router::redirect('calebes');
+		Router::redirect('membros');
 	}
 
 	public function addPoint($args)
@@ -274,7 +274,7 @@ class UserController extends BaseController
 			$member->setPoint($point);
 			$member->update();
 		}
-		Router::redirect('calebes');
+		Router::redirect('membros');
 	}
 
 	public function removePoint($args)
@@ -286,6 +286,6 @@ class UserController extends BaseController
 			$member->setPoint('');
 			$member->update();
 		}
-		Router::redirect('calebes');
+		Router::redirect('membros');
 	}
 }

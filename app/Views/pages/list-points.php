@@ -17,10 +17,10 @@
 				<td><?= $point->getName() ?></td>
 				<td><?= $point->getAddress() ?></td>
 				<td>
-					<a href="<?= Router::getLink('ponto', $point->getId(), 'editar') ?>" class="btn btn-warning">
+					<a href="<?= Router::getLink('pontos', $point->getId(), 'editar') ?>" class="btn btn-warning">
 						Editar
 					</a>
-					<a href="<?= Router::getLink('ponto', $point->getId(), 'excluir') ?>" class="btn btn-danger">
+					<a href="<?= Router::getLink('pontos', $point->getId(), 'excluir') ?>" class="btn btn-danger">
 						Excluir
 					</a>
 				</td>
@@ -30,7 +30,7 @@
 						Alocado
 					</a>
 <?php else: ?>
-					<a href="<?= Router::getLink('calebe/ponto', $point->getId(), 'alocar') ?>" class="btn btn-secondary">
+					<a href="<?= Router::getLink('membros/pontos', $point->getId(), 'alocar') ?>" class="btn btn-secondary">
 						Alocar-se
 					</a>
 <?php endif; ?>

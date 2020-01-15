@@ -86,6 +86,22 @@ class Point
 		return false;
 	}
 
+	public function getLeaders()
+	{
+		$db = new DataBase(['leader', 'member']);
+		$ret = array();
+		foreach ($db->leader->join($db->member, function($leader, $member) {
+			return $leader->id == $member->id;
+		})->where( function($row) {
+			return $row->point == $this->id;
+		})->order( function($a, $b) {
+			return strcmp($a->name, $b->name);
+		}) as $value) {
+			$ret[] = Member::get($value->id);
+		}
+		return $ret;
+	}
+
 	public function insert()
 	{
 		$db = new DataBase('point');

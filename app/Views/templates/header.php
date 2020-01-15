@@ -3,11 +3,11 @@ use Tonight\MVC\Router;
 
 $login = Router::getLink('login');
 $link = new stdClass;
-$link->registerPoint = Router::getLink('ponto/cadastrar');
+$link->registerPoint = Router::getLink('pontos/cadastrar');
 $link->managePoints = Router::getLink('pontos');
-$link->registerUser = Router::getLink('calebe/cadastrar');
-$link->manageUsers = Router::getLink('calebes');
-$link->registerSearch = Router::getLink('pesquisa/cadastrar');
+$link->registerUser = Router::getLink('membros/cadastrar');
+$link->manageUsers = Router::getLink('membros');
+$link->registerSearch = Router::getLink('pesquisas/cadastrar');
 $link->manageSearches = Router::getLink('pesquisas');
 $leader = false;
 
@@ -15,7 +15,9 @@ if ($user !== false) {
   if ($user->isLeader()) {
     $leader = true;
   }
-  $link->edit = Router::getLink('calebe', $user->getId(), 'editar');
+  $point = $user->getPoint();
+  $link->point = Router::getLink('pontos', $point ? $point->getId() : 0, 'visualizar');
+  $link->edit = Router::getLink('membros', $user->getId(), 'editar');
   $link->logout = Router::getLink('logout/acao');
 }
 ?>
@@ -72,7 +74,9 @@ if ($user !== false) {
             <?= $user->getName() ?>
           </a>
           <div class="dropdown-menu">
+            <a href="<?= $link->point ?>" class="dropdown-item">Meu ponto</a>
             <a href="<?= $link->edit ?>" class="dropdown-item">Editar informações</a>
+            <a href="<?= '' ?>" class="dropdown-item">Responder pesquisa</a>
             <a href="<?= $link->logout ?>" class="dropdown-item">Sair</a>
           </div>
         </li>

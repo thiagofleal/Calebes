@@ -27,11 +27,25 @@ class PointController extends BaseController
 		$this->render('list-points', 'main-template');
 	}
 
+	public function view($args)
+	{
+		$point = Point::get($args->id);
+
+		if ($point === false) {
+			Router::redirect('erro/Ponto não encontrado');
+			exit;
+		}
+
+		$this->setVariable('title', $point->getName());
+		$this->setVariable('point', $point);
+		$this->render('point-view', 'main-template');
+	}
+
 	public function register()
 	{
 		$this->checkLeader();
 		$this->setVariable('title', 'Cadastrar ponto');
-		$this->setVariable('action', Router::getLink('ponto/acao/cadastrar'));
+		$this->setVariable('action', Router::getLink('pontos/acao/cadastrar'));
 		if (Session::issetFlash('register-point')) {
 			$this->setVariable('flash', true);
 			$this->setVariable('alert', Session::getFlash('register-point'));
@@ -61,7 +75,7 @@ class PointController extends BaseController
 				'text' => 'Preencha o campo "Nome"'
 			]);
 			Session::setFlash('register-point-values', $request);
-			Router::redirect('ponto', 'cadastrar');
+			Router::redirect('pontos/cadastrar');
 			exit;
 		}
 		if (empty($request->address)) {
@@ -70,7 +84,7 @@ class PointController extends BaseController
 				'text' => 'Preencha o campo "Endereço"'
 			]);
 			Session::setFlash('register-point-values', $request);
-			Router::redirect('ponto', 'cadastrar');
+			Router::redirect('pontos/cadastrar');
 			exit;
 		}
 
@@ -82,14 +96,14 @@ class PointController extends BaseController
 			'text' => 'Ponto cadastrado com sucesso'
 		]);
 		Session::setFlash('register-point-values', new stdClass);
-		Router::redirect('ponto', 'cadastrar');
+		Router::redirect('pontos/cadastrar');
 	}
 
 	public function edit($args)
 	{
 		$this->checkLeader();
 		$this->setVariable('title', 'Editar ponto');
-		$this->setVariable('action', Router::getLink('ponto', $args->id, 'acao/editar'));
+		$this->setVariable('action', Router::getLink('pontos', $args->id, 'acao/editar'));
 		if (Session::issetFlash('edit-point')) {
 			$this->setVariable('flash', true);
 			$this->setVariable('alert', Session::getFlash('edit-point'));
@@ -119,7 +133,7 @@ class PointController extends BaseController
 				'text' => 'Preencha o campo "Nome"'
 			]);
 			Session::setFlash('edit-point-values', $request);
-			Router::redirect('ponto', $args->id, 'editar');
+			Router::redirect('pontos', $args->id, 'editar');
 			exit;
 		}
 		if (empty($request->address)) {
@@ -128,7 +142,7 @@ class PointController extends BaseController
 				'text' => 'Preencha o campo "Endereço"'
 			]);
 			Session::setFlash('edit-point-values', $request);
-			Router::redirect('ponto', $args->id, 'editar');
+			Router::redirect('pontos', $args->id, 'editar');
 			exit;
 		}
 
@@ -140,7 +154,7 @@ class PointController extends BaseController
 				'text' => 'Ponto não encontrado'
 			]);
 			Session::setFlash('edit-point-values', $request);
-			Router::redirect('ponto', $args->id, 'editar');
+			Router::redirect('pontos', $args->id, 'editar');
 			exit;
 		}
 
@@ -158,7 +172,7 @@ class PointController extends BaseController
 				'text' => 'Erro ao editar ponto'
 			]);
 		}
-		Router::redirect('ponto', $args->id, 'editar');
+		Router::redirect('pontos', $args->id, 'editar');
 	}
 
 	public function delete($args)

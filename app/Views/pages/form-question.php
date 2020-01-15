@@ -71,18 +71,18 @@
 				<td>
 					<a href="<?=
 						Router::getLink(
-							'pesquisa', $option->getQuestion()->getSearch()->getId(),
-							'pergunta', $option->getQuestion()->getNumber(),
-							'resposta', $option->getNumber(),
+							'pesquisas', $option->getQuestion()->getSearch()->getId(),
+							'perguntas', $option->getQuestion()->getNumber(),
+							'alternativas', $option->getNumber(),
 							'acao/subir'
 						)
 					?>">
 						<img src="<?= $images ?>/arrow-up.png">
 					</a> | <a href="<?=
 						Router::getLink(
-							'pesquisa', $option->getQuestion()->getSearch()->getId(),
-							'pergunta', $option->getQuestion()->getNumber(),
-							'resposta', $option->getNumber(),
+							'pesquisas', $option->getQuestion()->getSearch()->getId(),
+							'perguntas', $option->getQuestion()->getNumber(),
+							'alternativas', $option->getNumber(),
 							'acao/descer'
 						)
 					?>">
@@ -92,17 +92,17 @@
 				<td>
 					<a href="<?=
 						Router::getLink(
-							'pesquisa', $option->getQuestion()->getSearch()->getId(),
-							'pergunta', $option->getQuestion()->getNumber(),
-							'resposta', $option->getNumber(),
+							'pesquisas', $option->getQuestion()->getSearch()->getId(),
+							'perguntas', $option->getQuestion()->getNumber(),
+							'alternativas', $option->getNumber(),
 							'editar'
 						)
 					?>" class="btn btn-warning">Editar</a>
 					<a href="<?=
 						Router::getLink(
-							'pesquisa', $option->getQuestion()->getSearch()->getId(),
-							'pergunta', $option->getQuestion()->getNumber(),
-							'resposta', $option->getNumber(),
+							'pesquisas', $option->getQuestion()->getSearch()->getId(),
+							'perguntas', $option->getQuestion()->getNumber(),
+							'alternativas', $option->getNumber(),
 							'acao/remover'
 						)
 					?>" class="btn btn-danger">Excluir</a>

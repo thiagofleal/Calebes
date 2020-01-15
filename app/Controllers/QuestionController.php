@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use stdClass;
 use Tonight\Tools\Session;
 use Tonight\MVC\Router;
 use App\Models\Search;
@@ -22,14 +23,16 @@ class QuestionController extends BaseController
 
 		$this->checkLeaderAndPoint($search->getPoint());
 		$this->setVariable('title', 'Adicionar pergunta');
-		$this->setVariable('action', Router::getLink('pesquisa', $search->getId(), 'pergunta/acao/adicionar'));
+		$this->setVariable('action', Router::getLink(
+			'pesquisas', $search->getId(), 'perguntas/acao/adicionar'
+		));
 		$this->setVariable('add_options', false);
 		$this->setVariable('options', array());
-		$this->setVariable('link_questions', Router::getLink('pesquisa', $search->getId(), 'editar'));
+		$this->setVariable('link_questions', Router::getLink('pesquisas', $search->getId(), 'editar'));
 		if (Session::issetFlash('register-question-values')) {
 			$this->setVariable('form', Session::getFlash('register-question-values'));
 		} else {
-			$this->setVariable('form', new \stdClass);
+			$this->setVariable('form', new stdClass);
 		}
 		if (Session::issetFlash('register-question')) {
 			$this->setVariable('flash', true);
@@ -67,7 +70,7 @@ class QuestionController extends BaseController
 				'type' => 'alert-danger',
 				'text' => 'O campo de texto não pode ser vazio'
 			]);
-			Router::redirect('pesquisa', $search->getId(), 'pergunta/adicionar');
+			Router::redirect('pesquisas', $search->getId(), 'perguntas/adicionar');
 			exit;
 		}
 
@@ -87,7 +90,7 @@ class QuestionController extends BaseController
 				'text' => 'Erro ao inserir pergunta'
 			]);
 		}
-		Router::redirect('pesquisa', $search->getId(), 'pergunta', $question->getNumber(), 'editar');
+		Router::redirect('pesquisas', $search->getId(), 'perguntas', $question->getNumber(), 'editar');
 	}
 
 	public function edit($args)
@@ -110,22 +113,22 @@ class QuestionController extends BaseController
 		$this->setVariable('title', 'Editar pergunta');
 		$this->setVariable(
 			'action', Router::getLink(
-				'pesquisa', $search->getId(), 'pergunta', $question->getNumber(), 'acao/editar'
+				'pesquisas', $search->getId(), 'perguntas', $question->getNumber(), 'acao/editar'
 			)
 		);
 		$this->setVariable(
 			'action_option', Router::getLink(
-				'pesquisa', $search->getId(), 'pergunta', $question->getNumber(), 'resposta/acao/adicionar'
+				'pesquisas', $search->getId(), 'perguntas', $question->getNumber(), 'resposta/acao/adicionar'
 			)
 		);
 		$this->setVariable('images', Router::getLink('assets/images'));
 		$this->setVariable('add_options', true);
 		$this->setVariable('options', $question->getOptions());
-		$this->setVariable('link_questions', Router::getLink('pesquisa', $search->getId(), 'editar'));
+		$this->setVariable('link_questions', Router::getLink('pesquisas', $search->getId(), 'editar'));
 		if (Session::issetFlash('edit-question-values')) {
 			$this->setVariable('form', Session::getFlash('edit-question-values'));
 		} else {
-			$form = new \stdClass;
+			$form = new stdClass;
 			$form->title = $question->getTitle();
 			$form->text = $question->getText();
 			$form->type = $question->getType();
@@ -171,7 +174,7 @@ class QuestionController extends BaseController
 				'text' => 'O campo de texto não pode ser vazio'
 			]);
 			Router::redirect(
-				'pesquisa', $search->getId(), 'pergunta', $question->getNumber(), 'editar'
+				'pesquisas', $search->getId(), 'perguntas', $question->getNumber(), 'editar'
 			);
 			exit;
 		}
@@ -191,7 +194,7 @@ class QuestionController extends BaseController
 				'text' => 'Pergunta alterada com sucesso'
 			]);
 		}
-		Router::redirect('pesquisa', $search->getId(), 'pergunta', $question->getNumber(), 'editar');
+		Router::redirect('pesquisas', $search->getId(), 'perguntas', $question->getNumber(), 'editar');
 	}
 
 	public function delete($args)
@@ -223,7 +226,7 @@ class QuestionController extends BaseController
 			]);
 		}
 		Router::redirect(
-			'pesquisa', $search->getId(), 'editar'
+			'pesquisas', $search->getId(), 'editar'
 		);
 	}
 
@@ -263,7 +266,7 @@ class QuestionController extends BaseController
 		}
 
 		Router::redirect(
-			'pesquisa', $search->getId(), 'editar'
+			'pesquisas', $search->getId(), 'editar'
 		);
 	}
 
@@ -303,7 +306,7 @@ class QuestionController extends BaseController
 		}
 
 		Router::redirect(
-			'pesquisa', $search->getId(), 'editar'
+			'pesquisas', $search->getId(), 'editar'
 		);
 	}
 }

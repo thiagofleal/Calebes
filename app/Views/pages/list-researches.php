@@ -16,8 +16,8 @@
 				<td><?= $search->getName() ?></td>
 				<td><?= date("d/m/Y H:i", strtotime($search->getCreation())) ?></td>
 				<td>
-					<a href="<?= Router::getLink('pesquisa', $search->getId(), 'editar') ?>" class="btn btn-warning">Editar</a>
-					<a href="<?= Router::getLink('pesquisa', $search->getId(), 'excluir') ?>" class="btn btn-danger">Excluir</a>
+					<a href="<?= Router::getLink('pesquisas', $search->getId(), 'editar') ?>" class="btn btn-warning">Editar</a>
+					<a href="<?= Router::getLink('pesquisas', $search->getId(), 'excluir') ?>" class="btn btn-danger">Excluir</a>
 				</td>
 			</tr>
 <?php endforeach; ?>

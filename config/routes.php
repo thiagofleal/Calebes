@@ -10,11 +10,11 @@ Config::addRoute(
 );
 
 Config::addRoute(
-	'erro/{type}',
+	'erros/{type}',
 	'ErrorController@show'
 );
 Config::addRoute(
-	'erro/{type}/{message}',
+	'erros/{type}/{message}',
 	'ErrorController@show'
 );
 
@@ -36,76 +36,76 @@ Config::addRoute(
 	'PointController@index'
 );
 Config::addRoute(
-	'ponto/cadastrar',
+	'pontos/cadastrar',
 	'PointController@register'
 );
 Config::addRoute(
-	'ponto/acao/cadastrar',
+	'pontos/acao/cadastrar',
 	'PointController@registerAction'
 );
 Config::addRoute(
-	'ponto/{id}/visualizar',
+	'pontos/{id}/visualizar',
 	'PointController@view'
 );
 Config::addRoute(
-	'ponto/{id}/editar',
+	'pontos/{id}/editar',
 	'PointController@edit'
 );
 Config::addRoute(
-	'ponto/{id}/acao/editar',
+	'pontos/{id}/acao/editar',
 	'PointController@editAction'
 );
 Config::addRoute(
-	'ponto/{id}/excluir',
+	'pontos/{id}/excluir',
 	'PointController@delete'
 );
 Config::addRoute(
-	'calebe/ponto/{id}/alocar',
+	'membros/pontos/{id}/alocar',
 	'PointController@addUser'
 );
 
 Config::addRoute(
-	'calebes',
+	'membros',
 	'UserController@index'
 );
 Config::addRoute(
-	'calebe/cadastrar',
+	'membros/cadastrar',
 	'UserController@register'
 );
 Config::addRoute(
-	'calebe/acao/cadastrar',
+	'membros/acao/cadastrar',
 	'UserController@registerAction'
 );
 Config::addRoute(
-	'calebe/{id}/visualizar',
+	'membros/{id}/visualizar',
 	'UserController@view'
 );
 Config::addRoute(
-	'calebe/{id}/editar',
+	'membros/{id}/editar',
 	'UserController@edit'
 );
 Config::addRoute(
-	'calebe/{id}/acao/editar',
+	'membros/{id}/acao/editar',
 	'UserController@editAction'
 );
 Config::addRoute(
-	'calebe/{id}/excluir',
+	'membros/{id}/excluir',
 	'UserController@delete'
 );
 Config::addRoute(
-	'lider/calebe/{id}/adicionar',
+	'lideres/{id}/adicionar',
 	'UserController@addLeader'
 );
 Config::addRoute(
-	'lider/calebe/{id}/remover',
+	'lideres/{id}/remover',
 	'UserController@removeLeader'
 );
 Config::addRoute(
-	'ponto/calebe/{id}/alocar',
+	'pontos/membros/{id}/alocar',
 	'UserController@addPoint'
 );
 Config::addRoute(
-	'ponto/calebe/{id}/desalocar',
+	'pontos/membros/{id}/desalocar',
 	'UserController@removePoint'
 );
 
@@ -114,79 +114,79 @@ Config::addRoute(
 	'SearchController@index'
 );
 Config::addRoute(
-	'pesquisa/cadastrar',
+	'pesquisas/cadastrar',
 	'SearchController@register'
 );
 Config::addRoute(
-	'pesquisa/acao/cadastrar',
+	'pesquisas/acao/cadastrar',
 	'SearchController@registerAction'
 );
 Config::addRoute(
-	'pesquisa/{id}/editar',
+	'pesquisas/{id}/editar',
 	'SearchController@edit'
 );
 Config::addRoute(
-	'pesquisa/{id}/abrir',
+	'pesquisas/{id}/abrir',
 	'SearchController@open'
 );
 Config::addRoute(
-	'pesquisa/{id}/acao/editar',
+	'pesquisas/{id}/acao/editar',
 	'SearchController@editAction'
 );
 Config::addRoute(
-	'pesquisa/{id}/excluir',
+	'pesquisas/{id}/excluir',
 	'SearchController@delete'
 );
 
 Config::addRoute(
-	'pesquisa/{search}/pergunta/adicionar',
+	'pesquisas/{search}/perguntas/adicionar',
 	'QuestionController@create'
 );
 Config::addRoute(
-	'pesquisa/{search}/pergunta/acao/adicionar',
+	'pesquisas/{search}/perguntas/acao/adicionar',
 	'QuestionController@createAction'
 );
 Config::addRoute(
-	'pesquisa/{search}/pergunta/{question}/editar',
+	'pesquisas/{search}/perguntas/{question}/editar',
 	'QuestionController@edit'
 );
 Config::addRoute(
-	'pesquisa/{search}/pergunta/{question}/acao/editar',
+	'pesquisas/{search}/perguntas/{question}/acao/editar',
 	'QuestionController@editAction'
 );
 Config::addRoute(
-	'pesquisa/{search}/pergunta/{question}/acao/subir',
+	'pesquisas/{search}/perguntas/{question}/acao/subir',
 	'QuestionController@moveUp'
 );
 Config::addRoute(
-	'pesquisa/{search}/pergunta/{question}/acao/descer',
+	'pesquisas/{search}/perguntas/{question}/acao/descer',
 	'QuestionController@moveDown'
 );
 Config::addRoute(
-	'pesquisa/{search}/pergunta/{question}/excluir',
+	'pesquisas/{search}/perguntas/{question}/excluir',
 	'QuestionController@delete'
 );
 Config::addRoute(
-	'pesquisa/{search}/pergunta/{question}/resposta/acao/adicionar',
+	'pesquisas/{search}/perguntas/{question}/alternativas/acao/adicionar',
 	'OptionController@add'
 );
 Config::addRoute(
-	'pesquisa/{search}/pergunta/{question}/resposta/{option}/editar',
+	'pesquisas/{search}/perguntas/{question}/alternativas/{option}/editar',
 	'OptionController@edit'
 );
 Config::addRoute(
-	'pesquisa/{search}/pergunta/{question}/resposta/{option}/acao/subir',
+	'pesquisas/{search}/perguntas/{question}/alternativas/{option}/acao/subir',
 	'OptionController@moveUp'
 );
 Config::addRoute(
-	'pesquisa/{search}/pergunta/{question}/resposta/{option}/acao/descer',
+	'pesquisas/{search}/perguntas/{question}/alternativas/{option}/acao/descer',
 	'OptionController@moveDown'
 );
 Config::addRoute(
-	'pesquisa/{search}/pergunta/{question}/resposta/{option}/acao/editar',
+	'pesquisas/{search}/perguntas/{question}/alternativas/{option}/acao/editar',
 	'OptionController@editAction'
 );
 Config::addRoute(
-	'pesquisa/{search}/pergunta/{question}/resposta/{option}/acao/remover',
+	'pesquisas/{search}/perguntas/{question}/alternativas/{option}/acao/remover',
 	'OptionController@remove'
 );

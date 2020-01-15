@@ -27,6 +27,7 @@
 				name="answer[<?= $question->getNumber() ?>]['value']"
 				id="question_<?= $question->getNumber() ?>_option_<?= $option->getNumber() ?>"
 				class="enable-on-mark"
+				value="<?= $option->getNumber() ?>"
 				data-enable="#question_<?= $question->getNumber() ?>_option_<?= $option->getNumber() ?>_text" />
 				<label
 				for="question_<?= $question->getNumber() ?>_option_<?= $option->getNumber() ?>" />
@@ -46,6 +47,7 @@
 				name="answer[<?= $question->getNumber() ?>]['value'][<?= $option->getNumber() ?>]"
 				id="question_<?= $question->getNumber() ?>_option_<?= $option->getNumber() ?>"
 				class="enable-on-mark"
+				value="<?= $option->getNumber() ?>"
 				data-enable="#question_<?= $question->getNumber() ?>_option_<?= $option->getNumber() ?>_text" />
 				<label
 				for="question_<?= $question->getNumber() ?>_option_<?= $option->getNumber() ?>">
