@@ -24,6 +24,9 @@
 		<a href="<?= $view_link ?>" class="btn btn-info" target="_blank">
 			Visualizar
 		</a>
+		<a href="<?= $result_link ?>" class="btn btn-info" target="_blank">
+			Resultados
+		</a>
 		<hr>
 		<table class="table table-borderless table-responsive d-md-table">
 			<thead>

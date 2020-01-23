@@ -118,7 +118,7 @@ class QuestionController extends BaseController
 		);
 		$this->setVariable(
 			'action_option', Router::getLink(
-				'pesquisas', $search->getId(), 'perguntas', $question->getNumber(), 'resposta/acao/adicionar'
+				'pesquisas', $search->getId(), 'perguntas', $question->getNumber(), 'alternativas/acao/adicionar'
 			)
 		);
 		$this->setVariable('images', Router::getLink('assets/images'));

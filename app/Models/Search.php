@@ -123,6 +123,23 @@ class Search
 		return false;
 	}
 
+	public function countAnswerOption($option)
+	{
+		$db = new DataBase('selected_option');
+
+		if ($option instanceof Option) {
+			$option_id = $option->getId();
+		} else {
+			$option_id = $option;
+		}
+
+		$result = $db->selected_option->where( function($row) use($option_id) {
+			return $row->option == $option_id;
+		});
+
+		return $result->size();
+	}
+
 	public function insert()
 	{
 		$db = new DataBase('search');

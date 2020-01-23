@@ -92,8 +92,7 @@ class Answer
 
 		$db->answer->append([
 			'user' => $this->user,
-			'search' => $this->search,
-			'time' => $this->time
+			'search' => $this->search
 		]);
 		$db->answer->update();
 	}

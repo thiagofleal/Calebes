@@ -28,7 +28,7 @@ class SelectedOption
 		return Answer::get($this->answer);
 	}
 
-	public function setAnswer($user)
+	public function setAnswer($answer)
 	{
 		if ($answer instanceof Answer) {
 			$this->answer = $answer->getId();

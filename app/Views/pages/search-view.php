@@ -19,12 +19,18 @@
 <?php foreach ($question->getOptions() as $option): ?>
 <?php if ($question->getType() == 1): ?>
 				<label><?= $option->getText() ?></label>
-				<textarea name="question_<?= $question->getNumber() ?>_option_<?= $option->getNumber() ?>"
-					class="form-control"></textarea>
+				<input type="hidden"
+				name="answer[value][<?= $question->getNumber() ?>][]"
+				value="<?= $option->getNumber() ?>">
+<?php if ($option->getInsert()): ?>
+				<textarea
+				name="answer[extra][<?= $question->getNumber() ?>][<?= $option->getNumber() ?>]"
+				class="form-control"></textarea>
+<?php endif; ?>
 <?php endif; ?>
 <?php if ($question->getType() == 2): ?>
 				<input type="radio"
-				name="answer[<?= $question->getNumber() ?>]['value']"
+				name="answer[value][<?= $question->getNumber() ?>][]"
 				id="question_<?= $question->getNumber() ?>_option_<?= $option->getNumber() ?>"
 				class="enable-on-mark"
 				value="<?= $option->getNumber() ?>"
@@ -36,7 +42,7 @@
 				<br>
 <?php if ($option->getInsert()): ?>
 				<input type="text"
-				name="answer[<?= $question->getNumber() ?>]['text'][<?= $option->getNumber() ?>]"
+				name="answer[extra][<?= $question->getNumber() ?>][<?= $option->getNumber() ?>]"
 				class="form-control"
 				id="question_<?= $question->getNumber() ?>_option_<?= $option->getNumber() ?>_text"
 				disabled="disabled" />
@@ -44,7 +50,7 @@
 <?php endif; ?>
 <?php if ($question->getType() == 3): ?>
 				<input type="checkbox"
-				name="answer[<?= $question->getNumber() ?>]['value'][<?= $option->getNumber() ?>]"
+				name="answer[value][<?= $question->getNumber() ?>][]"
 				id="question_<?= $question->getNumber() ?>_option_<?= $option->getNumber() ?>"
 				class="enable-on-mark"
 				value="<?= $option->getNumber() ?>"
@@ -56,7 +62,7 @@
 				<br>
 <?php if ($option->getInsert()): ?>
 				<input type="text"
-				name="answer[<?= $option->getNumber() ?>]['text']"
+				name="answer[extra][<?= $question->getNumber() ?>][<?= $option->getNumber() ?>]"
 				class="form-control"
 				id="question_<?= $question->getNumber() ?>_option_<?= $option->getNumber() ?>_text"
 				disabled="disabled" />

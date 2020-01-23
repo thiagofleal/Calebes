@@ -31,5 +31,5 @@ try
 }
 catch(Exception $e)
 {
-	Router::redirect('erro', 'Exceção não tratada', $e->getMessage());
+	Router::redirect('erros', 'Exceção não tratada', $e->getMessage());
 }

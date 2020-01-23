@@ -59,6 +59,20 @@ class Option
 		return $ret;
 	}
 
+	public function getSelected()
+	{
+		$db = new DataBase('selected_option');
+		$ret = array();
+
+		foreach ($db->selected_option->where( function($row) {
+			return $row->option == $this->id;
+		}) as $selected) {
+			$ret[] = SelectedOption::get($selected->id);
+		}
+
+		return $ret;
+	}
+
 	public function insert()
 	{
 		$db = new DataBase('option');

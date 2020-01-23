@@ -137,6 +137,14 @@ Config::addRoute(
 	'pesquisas/{id}/excluir',
 	'SearchController@delete'
 );
+Config::addRoute(
+	'pesquisas/{id}/resultados',
+	'AnswerController@results'
+);
+Config::addRoute(
+	'pesquisas/{id}/acao/responder',
+	'AnswerController@action'
+);
 
 Config::addRoute(
 	'pesquisas/{search}/perguntas/adicionar',

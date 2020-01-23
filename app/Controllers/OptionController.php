@@ -134,9 +134,9 @@ class OptionController extends BaseController
 		);
 		$this->setVariable(
 			'action_option', Router::getLink(
-				'pesquisa', $search->getId(),
-				'pergunta', $question->getNumber(),
-				'resposta', $option->getNumber(),
+				'pesquisas', $search->getId(),
+				'perguntas', $question->getNumber(),
+				'alternativas', $option->getNumber(),
 				'acao/editar'
 			)
 		);

@@ -26,6 +26,7 @@ $user = Session::get('user');
 
 <?php require __DIR__ . '/header.php'; ?>
 <?php $this->content(); ?>
+		<br>
 <?php require __DIR__ . '/footer.php'; ?>
 
 	</body>

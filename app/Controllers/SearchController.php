@@ -91,6 +91,7 @@ class SearchController extends BaseController
 		$this->setVariable('action', Router::getLink('pesquisas', $args->id, 'acao/editar'));
 		$this->setVariable('images', Router::getLink('assets/images'));
 		$this->setVariable('view_link', Router::getLink('pesquisas', $search->getId(), 'abrir'));
+		$this->setVariable('result_link', Router::getLink('pesquisas', $search->getId(), 'resultados'));
 		$this->setVariable('add_questions', true);
 		$this->setVariable('add_question_link', Router::getLink(
 			'pesquisas', $args->id, 'perguntas/adicionar'

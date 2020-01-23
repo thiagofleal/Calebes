@@ -32,7 +32,7 @@ class PointController extends BaseController
 		$point = Point::get($args->id);
 
 		if ($point === false) {
-			Router::redirect('erro/Ponto não encontrado');
+			Router::redirect('erros/Ponto não encontrado');
 			exit;
 		}
 
