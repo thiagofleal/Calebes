@@ -66,12 +66,19 @@ class Answer
 
 	public function getOptions()
 	{
-		$db = new DataBase('selected_option');
+		$db = new DataBase(['question', 'option', 'selected_option']);
 		$ret = array();
-		foreach ($db->selected_option->where( function($row) {
-			return $row->search == $this->search;
+		foreach ($db->selected_option->select( function($row) {
+			$row->id_selected = $row->id;
+			return $row;
+		})->join($db->option, function($selected, $option) {
+			return $selected->option == $option->id;
+		})->join($db->question, function($selected, $question) {
+			return $selected->question == $question->id;
+		})->where( function($row) {
+			return $row->answer == $this->id;
 		}) as $value) {
-			$ret[] = SelectedOption::get($value->id);
+			$ret[] = SelectedOption::get($value->id_selected);
 		}
 		return $ret;
 	}

@@ -8,6 +8,8 @@
 				<th>Nome</th>
 				<th>Criação</th>
 				<th>Ações</th>
+				<th>Respostas</th>
+				<th>Token</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -18,6 +20,14 @@
 				<td>
 					<a href="<?= Router::getLink('pesquisas', $search->getId(), 'editar') ?>" class="btn btn-warning">Editar</a>
 					<a href="<?= Router::getLink('pesquisas', $search->getId(), 'excluir') ?>" class="btn btn-danger">Excluir</a>
+				</td>
+				<td>
+					<a href="<?= Router::getLink('pesquisas', $search->getId(), 'resultados') ?>" class="btn btn-info">
+						Resultados
+					</a>
+				</td>
+				<td>
+					<?= $search->getToken() ?>
 				</td>
 			</tr>
 <?php endforeach; ?>

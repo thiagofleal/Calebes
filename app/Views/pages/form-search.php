@@ -24,9 +24,15 @@
 		<a href="<?= $view_link ?>" class="btn btn-info" target="_blank">
 			Visualizar
 		</a>
-		<a href="<?= $result_link ?>" class="btn btn-info" target="_blank">
-			Resultados
+<?php if ($release): ?>
+		<a href="<?= $release_link ?>" class="btn btn-warning">
+			Liberar
 		</a>
+<?php else: ?>
+		<a href="<?= $release_link ?>" class="btn btn-secondary">
+			Bloquear
+		</a>
+<?php endif; ?>
 		<hr>
 		<table class="table table-borderless table-responsive d-md-table">
 			<thead>
@@ -46,7 +52,7 @@
 						<a href="<?=
 							Router::getLink(
 								'pesquisas', $question->getSearch()->getId(),
-								'pergunta', $question->getNumber(),
+								'perguntas', $question->getNumber(),
 								'acao/subir'
 							)
 						?>">
@@ -54,7 +60,7 @@
 						</a> | <a href="<?=
 							Router::getLink(
 								'pesquisas', $question->getSearch()->getId(),
-								'pergunta', $question->getNumber(),
+								'perguntas', $question->getNumber(),
 								'acao/descer'
 							)
 						?>">

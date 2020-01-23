@@ -91,7 +91,15 @@ class SearchController extends BaseController
 		$this->setVariable('action', Router::getLink('pesquisas', $args->id, 'acao/editar'));
 		$this->setVariable('images', Router::getLink('assets/images'));
 		$this->setVariable('view_link', Router::getLink('pesquisas', $search->getId(), 'abrir'));
-		$this->setVariable('result_link', Router::getLink('pesquisas', $search->getId(), 'resultados'));
+		
+		if ($search->isVisible()) {
+			$this->setVariable('release', false);
+			$this->setVariable('release_link', Router::getLink('pesquisas', $search->getId(), 'bloquear'));
+		} else {
+			$this->setVariable('release', true);
+			$this->setVariable('release_link', Router::getLink('pesquisas', $search->getId(), 'liberar'));
+		}
+		
 		$this->setVariable('add_questions', true);
 		$this->setVariable('add_question_link', Router::getLink(
 			'pesquisas', $args->id, 'perguntas/adicionar'
@@ -186,7 +194,28 @@ class SearchController extends BaseController
 			Router::redirect();
 		}
 
+		$user = $this->checkLogged();
 		$this->checkPoint($search->getPoint());
+
+		if (! $search->isVisible()) {
+			$this->checkLeader();
+		} elseif (! $user->isLeader() && !(Session::get('search-access')[$search->getId()] ?? false) ) {
+			$this->setVariable('title', "Verificar token");
+
+			if (Session::issetFlash('form-token')) {
+				$this->setVariable('flash', true);
+				$this->setVariable('alert', Session::getFlash('form-token'));
+			} else {
+				$this->setVariable('flash', false);
+				$this->setVariable('alert', [
+					'type' => '',
+					'text' => ''
+				]);
+			}
+			$this->setVariable('action', Router::getLink('pesquisas', $search->getId(), 'acao/token'));
+			$this->render('form-token', 'main-template');
+			exit();
+		}
 
 		$this->setVariable('title', $search->getName());
 		$this->setVariable('questions', $search->getQuestions());
@@ -202,5 +231,63 @@ class SearchController extends BaseController
 			]);
 		}
 		$this->render('search-view', 'main-template');
+	}
+
+	public function release($args)
+	{
+		$search = Search::get($args->id);
+
+		if ($search === false) {
+			Router::redirect();
+			exit();
+		}
+
+		$this->checkLeaderAndPoint($search->getPoint());
+		$search->createToken();
+		$search->update();
+		Router::redirect('pesquisas', $search->getId(), 'editar');
+	}
+
+	public function block($args)
+	{
+		$search = Search::get($args->id);
+
+		if ($search === false) {
+			Router::redirect();
+			exit();
+		}
+
+		$this->checkLeaderAndPoint($search->getPoint());
+		$search->removeToken();
+		$search->update();
+		Router::redirect('pesquisas', $search->getId(), 'editar');
+	}
+
+	public function token($args, $request)
+	{
+		$search = Search::get($args->id);
+
+		if ($search === false) {
+			Router::redirect();
+		}
+
+		$user = $this->checkLogged();
+		$this->checkPoint($search->getPoint());
+
+		if ($search->validateToken($request->get('token', NULL))) {
+			$search_access = Session::get('search-access');
+			$search_access[$search->getId()] = true;
+			Session::set('search-access', $search_access);
+		} else {
+			$search_access = Session::get('search-access');
+			$search_access[$search->getId()] = false;
+			Session::set('search-access', $search_access);
+			Session::setFlash('form-token', [
+				'type' => 'alert-danger',
+				'text' => 'Token incorreto'
+			]);
+		}
+
+		Router::redirect('pesquisas', $search->getId(), 'abrir');
 	}
 }

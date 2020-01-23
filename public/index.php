@@ -25,6 +25,10 @@ if (Session::isset('user') && Session::get('user') !== false) {
 	Session::set('user', false);
 }
 
+if (!Session::isset('search-access')) {
+	Session::set('search-access', array());
+}
+
 try
 {
 	(new Router())->run();

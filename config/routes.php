@@ -60,10 +60,18 @@ Config::addRoute(
 	'PointController@delete'
 );
 Config::addRoute(
+	'pontos/{id}/pesquisas',
+	'PointController@researches'
+);
+Config::addRoute(
+	'pontos/{id}/pesquisas',
+	'PointController@researches'
+);
+
+Config::addRoute(
 	'membros/pontos/{id}/alocar',
 	'PointController@addUser'
 );
-
 Config::addRoute(
 	'membros',
 	'UserController@index'
@@ -130,6 +138,10 @@ Config::addRoute(
 	'SearchController@open'
 );
 Config::addRoute(
+	'pesquisas/{id}/acao/token',
+	'SearchController@token'
+);
+Config::addRoute(
 	'pesquisas/{id}/acao/editar',
 	'SearchController@editAction'
 );
@@ -140,6 +152,26 @@ Config::addRoute(
 Config::addRoute(
 	'pesquisas/{id}/resultados',
 	'AnswerController@results'
+);
+Config::addRoute(
+	'pesquisas/{id}/resultados/geral',
+	'AnswerController@generalResults'
+);
+Config::addRoute(
+	'pesquisas/{search}/resultados/{answer}/exibir',
+	'AnswerController@unitaryResult'
+);
+Config::addRoute(
+	'pesquisas/{search}/resultados/{answer}/excluir',
+	'AnswerController@delete'
+);
+Config::addRoute(
+	'pesquisas/{id}/liberar',
+	'SearchController@release'
+);
+Config::addRoute(
+	'pesquisas/{id}/bloquear',
+	'SearchController@block'
 );
 Config::addRoute(
 	'pesquisas/{id}/acao/responder',

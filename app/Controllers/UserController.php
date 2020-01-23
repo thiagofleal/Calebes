@@ -118,7 +118,7 @@ class UserController extends BaseController
 			} else {
 				Session::setFlash('register-user', [
 					'type' => 'alert-warning',
-					'text' => 'O documento informado já se encontra na base de dados'
+					'text' => 'O documento ou email já se encontra na base de dados'
 				]);
 			}
 		}

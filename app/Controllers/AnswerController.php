@@ -18,6 +18,10 @@ class AnswerController extends BaseController
 
 		$this->checkPoint($search->getPoint());
 
+		if (!$search->isVisible()) {
+			$this->checkLeader();
+		}
+
 		$answer = new Answer();
 		$search_answers = $request->get('answer', ['value' => array(), 'extra' => array()]);
 
@@ -25,7 +29,7 @@ class AnswerController extends BaseController
 		$search->addAnswer($answer);
 
 		$answers = $search->getAnswers();
-		$answer = array_pop($answers);
+		$answer = array_shift($answers);
 
 		foreach ($search_answers["value"] as $question_number => $question_options) {
 			$question = $search->getQuestion($question_number);
@@ -47,6 +51,22 @@ class AnswerController extends BaseController
 	}
 
 	public function results($args)
+	{
+		$search = Search::get($args->id);
+
+		if ($search === false) {
+			Router::redirect();
+		}
+
+		$this->checkLeaderAndPoint($search->getPoint());
+
+		$this->setVariable('title', $search->getName());
+		$this->setVariable('search', $search);
+		$this->setVariable('general_link', Router::getLink('pesquisas', $search->getId(), 'resultados/geral'));
+		$this->render('list-results', 'main-template');
+	}
+
+	public function generalResults($args)
 	{
 		$search = Search::get($args->id);
 
@@ -88,5 +108,47 @@ class AnswerController extends BaseController
 		$this->setVariable('count', $count);
 		$this->setVariable('results', $results);
 		$this->render('search-results', 'main-template');
+	}
+
+	public function unitaryResult($args)
+	{
+		$search = Search::get($args->search);
+
+		if ($search === false) {
+			Router::redirect();
+		}
+
+		$this->checkLeaderAndPoint($search->getPoint());
+
+		$answer = Answer::get($args->answer);
+
+		if ($answer === false) {
+			Router::redirect();
+		}
+
+		$this->setVariable('title', $search->getName());
+		$this->setVariable('search', $search);
+		$this->setVariable('answer', $answer);
+		$this->render('answer-view', 'main-template');
+	}
+
+	public function delete($args)
+	{
+		$search = Search::get($args->search);
+
+		if ($search === false) {
+			Router::redirect();
+		}
+
+		$this->checkLeaderAndPoint($search->getPoint());
+
+		$answer = Answer::get($args->answer);
+
+		if ($answer === false) {
+			Router::redirect();
+		}
+
+		$answer->delete();
+		Router::redirect('pesquisas', $search->getId(), 'resultados');
 	}
 }

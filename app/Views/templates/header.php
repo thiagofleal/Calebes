@@ -18,6 +18,8 @@ if ($user !== false) {
   $point = $user->getPoint();
   $link->point = Router::getLink('pontos', $point ? $point->getId() : 0, 'visualizar');
   $link->edit = Router::getLink('membros', $user->getId(), 'editar');
+  $point = $user->getPoint();
+  $link->researches = Router::getLink('pontos', $point ? $point->getId() : 0, 'pesquisas');
   $link->logout = Router::getLink('logout/acao');
 }
 ?>
@@ -76,7 +78,7 @@ if ($user !== false) {
           <div class="dropdown-menu">
             <a href="<?= $link->point ?>" class="dropdown-item">Meu ponto</a>
             <a href="<?= $link->edit ?>" class="dropdown-item">Editar informações</a>
-            <a href="<?= '' ?>" class="dropdown-item">Responder pesquisa</a>
+            <a href="<?= $link->researches ?>" class="dropdown-item">Pesquisas</a>
             <a href="<?= $link->logout ?>" class="dropdown-item">Sair</a>
           </div>
         </li>

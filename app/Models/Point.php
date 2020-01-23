@@ -76,6 +76,17 @@ class Point
 		return $ret;
 	}
 
+	public function getVisibleResearches()
+	{
+		$ret = array();
+		foreach ($this->getResearches() as $search) {
+			if ($search->isVisible()) {
+				$ret[] = $search;
+			}
+		}
+		return $ret;
+	}
+
 	public function addSearch(Search $search)
 	{
 		if ($search) {

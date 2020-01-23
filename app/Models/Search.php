@@ -44,12 +44,19 @@ class Search
 	public function getCreation() { return $this->creation; }
 	public function setCreation($creation) { $this->creation = $creation; }
 
-	public function getToken() { return $this->token; }
-	public function setToken($token)
+	public function getToken()
 	{
-		if (!empty($token)) {
-			$this->token = md5($token);
-		}
+		return substr($this->token, 0, 7);
+	}
+	
+	public function createToken()
+	{
+		$this->token = md5($this->id.time().$this->point);
+	}
+	
+	public function removeToken()
+	{
+		$this->token = NULL;
 	}
 
 	public static function getAll()
@@ -107,6 +114,8 @@ class Search
 		$ret = array();
 		foreach ($db->answer->where( function($row) {
 			return $row->search == $this->id;
+		})->order( function($a, $b) {
+			return strtotime($b->time) - strtotime($a->time);
 		}) as $value) {
 			$ret[] = Answer::get($value->id);
 		}
@@ -138,6 +147,16 @@ class Search
 		});
 
 		return $result->size();
+	}
+
+	public function isVisible()
+	{
+		return !empty($this->token);
+	}
+
+	public function validateToken($token)
+	{
+		return $token == $this->getToken();
 	}
 
 	public function insert()

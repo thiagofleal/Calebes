@@ -11,7 +11,9 @@
 	<strong><?= $question['text'] ?></strong>
 	<hr>
 	<?php foreach ($question['options'] as $option_number => $option): ?>
-		<li><strong><?= $option['text'] ?></strong>: <?= $option['count'] ?> (<?= $option['statistics'] ?>%)</li>
+		<li><strong><?= $option['text'] ?></strong>: 
+			<?= $option['count'] ?> <?= $option['count'] == 1 ? 'seleção' : 'seleções' ?>
+			(<?= $option['statistics'] ?>%)</li>
 		<ul>
 		<?php foreach ($option['data'] as $option_data): ?>
 			<?php if (!empty($option_data->getText())): ?>

@@ -32,7 +32,8 @@ class PointController extends BaseController
 		$point = Point::get($args->id);
 
 		if ($point === false) {
-			Router::redirect('erros/Ponto não encontrado');
+			$this->setVariable('title', 'Ponto não encontrado');
+			$this->render('point-not-found', 'main-template');
 			exit;
 		}
 
@@ -201,5 +202,21 @@ class PointController extends BaseController
 			$user->update();
 		}
 		Router::redirect('pontos');
+	}
+
+	public function researches($args)
+	{
+		$point = Point::get($args->id);
+
+		$this->checkPoint($point);
+
+		$this->setVariable('title', "Pesquisas");
+
+		if ($point === false) {
+			$this->setVariable('researches', array());
+		} else {
+			$this->setVariable('researches', $point->getVisibleResearches());
+		}
+		$this->render('list-point-researches', 'main-template');
 	}
 }
