@@ -7,8 +7,8 @@
 			<tr>
 				<th>Nome</th>
 				<th>Endereço</th>
-				<th>Ações</th>
 				<th>Alocar</th>
+				<th>Ações</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -16,14 +16,6 @@
 			<tr>
 				<td><?= $point->getName() ?></td>
 				<td><?= $point->getAddress() ?></td>
-				<td>
-					<a href="<?= Router::getLink('pontos', $point->getId(), 'editar') ?>" class="btn btn-warning">
-						Editar
-					</a>
-					<a href="<?= Router::getLink('pontos', $point->getId(), 'excluir') ?>" class="btn btn-danger">
-						Excluir
-					</a>
-				</td>
 				<td>
 <?php if ($point->getId() == $current_point): ?>
 					<a href="" class="btn btn-primary">
@@ -34,6 +26,14 @@
 						Alocar-se
 					</a>
 <?php endif; ?>
+				</td>
+				<td>
+					<a href="<?= Router::getLink('pontos', $point->getId(), 'editar') ?>" class="btn btn-warning">
+						Editar
+					</a>
+					<a href="<?= Router::getLink('pontos', $point->getId(), 'excluir') ?>" class="btn btn-danger">
+						Excluir
+					</a>
 				</td>
 			</tr>
 <?php endforeach; ?>

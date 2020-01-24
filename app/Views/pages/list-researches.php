@@ -7,9 +7,9 @@
 			<tr>
 				<th>Nome</th>
 				<th>Criação</th>
-				<th>Ações</th>
 				<th>Respostas</th>
 				<th>Token</th>
+				<th>Ações</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -18,16 +18,16 @@
 				<td><?= $search->getName() ?></td>
 				<td><?= date("d/m/Y H:i", strtotime($search->getCreation())) ?></td>
 				<td>
-					<a href="<?= Router::getLink('pesquisas', $search->getId(), 'editar') ?>" class="btn btn-warning">Editar</a>
-					<a href="<?= Router::getLink('pesquisas', $search->getId(), 'excluir') ?>" class="btn btn-danger">Excluir</a>
-				</td>
-				<td>
 					<a href="<?= Router::getLink('pesquisas', $search->getId(), 'resultados') ?>" class="btn btn-info">
 						Resultados
 					</a>
 				</td>
 				<td>
 					<?= $search->getToken() ?>
+				</td>
+				<td>
+					<a href="<?= Router::getLink('pesquisas', $search->getId(), 'editar') ?>" class="btn btn-warning">Editar</a>
+					<a href="<?= Router::getLink('pesquisas', $search->getId(), 'excluir') ?>" class="btn btn-danger">Excluir</a>
 				</td>
 			</tr>
 <?php endforeach; ?>
