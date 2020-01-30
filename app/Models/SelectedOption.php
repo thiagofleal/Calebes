@@ -64,6 +64,12 @@ class SelectedOption
 		return $ret;
 	}
 
+	public static function getCount()
+	{
+		$db = new DataBase('selected_option');
+		return count($db->selected_option);
+	}
+
 	public function insert()
 	{
 		$db = new DataBase('selected_option');

@@ -89,35 +89,10 @@ class AnswerController extends BaseController
 
 		$answers = $search->getAnswers();
 		$count = count($answers);
-		$results = array();
-
-		foreach ($search->getQuestions() as $question) {
-
-			$results[$question->getNumber()]['text'] = $question->getText();
-			$results[$question->getNumber()]['options'] = array();
-
-			foreach ($question->getOptions() as $option) {
-				$count_option = $search->countAnswerOption($option);
-				$results[$question->getNumber()]['options'][$option->getNumber()]['text'] =
-					$option->getText();
-				$results[$question->getNumber()]['options'][$option->getNumber()]['count'] =
-					$count_option;
-				$results[$question->getNumber()]['options'][$option->getNumber()]['data'] =
-					$option->getSelected();
-				if ($count) {
-					$results[$question->getNumber()]['options'][$option->getNumber()]['statistics'] =
-						(floatval($count_option) / floatval($count)) * 100.0;
-				} else {
-					$results[$question->getNumber()]['options'][$option->getNumber()]['statistics'] =
-						0;
-				} 
-			}
-		}
-
+		
 		$this->setVariable('title', "Resultados");
 		$this->setVariable('search', $search);
 		$this->setVariable('count', $count);
-		$this->setVariable('results', $results);
 		$this->render('search-results', 'main-template');
 	}
 

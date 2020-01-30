@@ -32,7 +32,7 @@ class DataBase extends MySQL
 		}
 		catch(Exception $e)
 		{
-			Router::redirect('erro', 'Erro interno', $e->getMessage());
+			Router::redirect('erros', 'Erro interno', $e->getMessage());
 		}
 	}
 }
