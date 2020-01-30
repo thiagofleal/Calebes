@@ -122,6 +122,33 @@ class Search
 		return $ret;
 	}
 
+	public function getAnswersFilter(array $filter)
+	{
+		$db = new DataBase(['answer', 'member']);
+		$ret = array();
+		
+		foreach ($db->answer->select( function($row) {
+			$row->answer = $row->id;
+			return $row;
+		})->join($db->member, function($answer, $member) {
+			return $answer->user == $member->id;
+		})->where( function($row) {
+			return $row->search == $this->id;
+		})->where( function($row) use($filter) {
+			foreach ($filter as $key => $value) {
+				if (! empty($value)) {
+					if (strpos($row->{$key}, $value) === false) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}) as $value) {
+			$ret[] = Answer::get($value->answer);
+		}
+		return $ret;
+	}
+
 	public function addAnswer(Answer $answer)
 	{
 		if ($answer) {

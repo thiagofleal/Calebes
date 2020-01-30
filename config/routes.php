@@ -138,8 +138,8 @@ Config::addRoute(
 	'SearchController@open'
 );
 Config::addRoute(
-	'pesquisas/{id}/acao/token',
-	'SearchController@token'
+	'pesquisas/{id}/token',
+	'SearchController@saveToken'
 );
 Config::addRoute(
 	'pesquisas/{id}/acao/editar',

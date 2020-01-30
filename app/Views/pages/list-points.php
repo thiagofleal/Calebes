@@ -31,7 +31,7 @@
 					<a href="<?= Router::getLink('pontos', $point->getId(), 'editar') ?>" class="btn btn-warning">
 						Editar
 					</a>
-					<a href="<?= Router::getLink('pontos', $point->getId(), 'excluir') ?>" class="btn btn-danger">
+					<a href="<?= Router::getLink('pontos', $point->getId(), 'excluir') ?>" class="btn btn-danger btn-conf">
 						Excluir
 					</a>
 				</td>

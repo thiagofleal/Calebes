@@ -25,7 +25,8 @@
 <?php if ($option->getInsert()): ?>
 				<textarea
 				name="answer[extra][<?= $question->getNumber() ?>][<?= $option->getNumber() ?>]"
-				class="form-control"></textarea>
+				class="form-control"
+				required="required"></textarea>
 <?php endif; ?>
 <?php endif; ?>
 <?php if ($question->getType() == 2): ?>

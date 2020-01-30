@@ -50,7 +50,7 @@ class AnswerController extends BaseController
 		Router::redirect();
 	}
 
-	public function results($args)
+	public function results($args, $request)
 	{
 		$search = Search::get($args->id);
 
@@ -58,10 +58,21 @@ class AnswerController extends BaseController
 			Router::redirect();
 		}
 
+		$filter = array();
+
 		$this->checkLeaderAndPoint($search->getPoint());
 
 		$this->setVariable('title', $search->getName());
 		$this->setVariable('search', $search);
+
+		if (isset($request->user)) {
+			$filter['name'] = $request->user ?? '';
+		}
+
+		$this->setVariable('filter_action',
+			Router::getLink('pesquisas', $search->getId(), 'resultados')
+		);
+		$this->setVariable('answers', $search->getAnswersFilter($filter));
 		$this->setVariable('general_link', Router::getLink('pesquisas', $search->getId(), 'resultados/geral'));
 		$this->render('list-results', 'main-template');
 	}

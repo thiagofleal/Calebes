@@ -1,6 +1,9 @@
-$(function() {
+$( function() {
 	$('.btn-clear-form').on('click', function() {
 		this.form.reset();
+	});
+	$('.btn-conf').on('click', function(e) {
+		return confirm("Deseja prosseguir?");
 	});
 	$('.enable-on-mark').on('change', function() {
 		var enable = $(this).data('enable');

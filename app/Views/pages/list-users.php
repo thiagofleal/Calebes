@@ -38,7 +38,7 @@
 				<a href="<?= Router::getLink('membros', $member->getId(), 'editar') ?>" class="btn btn-warning">
 					Editar
 				</a>
-				<a href="<?= Router::getLink('membros', $member->getId(), 'excluir') ?>" class="btn btn-danger">
+				<a href="<?= Router::getLink('membros', $member->getId(), 'excluir') ?>" class="btn btn-danger btn-danger">
 					Excluir
 				</a>
 			</td>

@@ -28,7 +28,7 @@ class DataBase extends MySQL
 		}
 		catch(PDOException $e)
 		{
-			Router::redirect('erro', 'Conexão com banco de dados', $e->getMessage());
+			Router::redirect('erros', 'Conexão com banco de dados', $e->getMessage());
 		}
 		catch(Exception $e)
 		{

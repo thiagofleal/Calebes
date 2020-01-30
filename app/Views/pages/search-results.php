@@ -1,3 +1,4 @@
+<?php use Tonight\MVC\Router; ?>
 <div class="container">
 	<h1><?= $title ?></h1>
 	<hr>
@@ -17,7 +18,9 @@
 		<ul>
 		<?php foreach ($option['data'] as $option_data): ?>
 			<?php if (!empty($option_data->getText())): ?>
-				<li><?= $option_data->getText() ?></li>
+				<li><a href="<?=
+					Router::getLink('pesquisas', $search->getId(), 'resultados', $option_data->getAnswer()->getId(), 'exibir')
+				?>"><?= $option_data->getText() ?></a></li>
 			<?php endif; ?>
 		<?php endforeach; ?>
 		</ul>

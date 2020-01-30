@@ -14,7 +14,21 @@
 			</tr>
 		</thead>
 		<tbody>
-<?php foreach ($search->getAnswers() as $answer): ?>
+			<tr>
+				<td>
+					<form method="get">
+						<div class="input-group">
+							<input type="text" name="user" class="form-control" />
+							<div class="input-group-append">
+								<button type="submit" class="btn btn-secondary">
+									Filtrar
+								</button>
+							</div>
+						</form>
+					</form>
+				</td>
+			</tr>
+<?php foreach ($answers as $answer): ?>
 			<tr>
 				<td><?= $answer->getUser()->getName() ?></td>
 				<td><?= date("d/m/Y H:i",	 strtotime($answer->getTime())) ?></td>
@@ -30,7 +44,7 @@
 						'pesquisas', $search->getId(),
 						'resultados', $answer->getId(),
 						'excluir'
-					) ?>" class="btn btn-danger">
+					) ?>" class="btn btn-danger btn-conf">
 						Excluir
 					</a>
 				</td>

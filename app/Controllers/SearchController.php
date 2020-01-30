@@ -199,27 +199,14 @@ class SearchController extends BaseController
 
 		if (! $search->isVisible()) {
 			$this->checkLeader();
-		} elseif (! $user->isLeader() && !(Session::get('search-access')[$search->getId()] ?? false) ) {
-			$this->setVariable('title', "Verificar token");
-
-			if (Session::issetFlash('form-token')) {
-				$this->setVariable('flash', true);
-				$this->setVariable('alert', Session::getFlash('form-token'));
-			} else {
-				$this->setVariable('flash', false);
-				$this->setVariable('alert', [
-					'type' => '',
-					'text' => ''
-				]);
-			}
-			$this->setVariable('action', Router::getLink('pesquisas', $search->getId(), 'acao/token'));
-			$this->render('form-token', 'main-template');
-			exit();
+		} else {
+			$this->token($search);
 		}
 
 		$this->setVariable('title', $search->getName());
 		$this->setVariable('questions', $search->getQuestions());
 		$this->setVariable('action', Router::getLink('pesquisas', $search->getId(), 'acao/responder'));
+		
 		if (Session::issetFlash('open-search')) {
 			$this->setVariable('flash', true);
 			$this->setVariable('alert', Session::getFlash('open-search'));
@@ -263,31 +250,46 @@ class SearchController extends BaseController
 		Router::redirect('pesquisas', $search->getId(), 'editar');
 	}
 
-	public function token($args, $request)
+	private function token($search)
 	{
-		$search = Search::get($args->id);
+		if (! Session::isset('search-token')) {
+			$this->setVariable('title', "Verificar token");
 
-		if ($search === false) {
-			Router::redirect();
+			if (Session::issetFlash('form-token')) {
+				$this->setVariable('flash', true);
+				$this->setVariable('alert', Session::getFlash('form-token'));
+			} else {
+				$this->setVariable('flash', false);
+				$this->setVariable('alert', [
+					'type' => '',
+					'text' => ''
+				]);
+			}
+			$this->setVariable('action', Router::getLink('pesquisas', $search->getId(), 'token'));
+			$this->render('form-token', 'main-template');
+			exit();
 		}
 
-		$user = $this->checkLogged();
-		$this->checkPoint($search->getPoint());
-
-		if ($search->validateToken($request->get('token', NULL))) {
-			$search_access = Session::get('search-access');
-			$search_access[$search->getId()] = true;
-			Session::set('search-access', $search_access);
+		if ($search->validateToken(Session::get('search-token'))) {
+			return;
 		} else {
-			$search_access = Session::get('search-access');
+			$search_access = Session::get('search-token');
 			$search_access[$search->getId()] = false;
-			Session::set('search-access', $search_access);
+			Session::set('search-token', $search_access);
 			Session::setFlash('form-token', [
 				'type' => 'alert-danger',
 				'text' => 'Token incorreto'
 			]);
+			Session::unset('search-token');
+			Router::redirect('pesquisas', $search->getId(), 'abrir');
+			exit();
 		}
+	}
 
-		Router::redirect('pesquisas', $search->getId(), 'abrir');
+	public function saveToken($args, $request)
+	{
+		$token = $request->get('token', NULL);
+		Session::set('search-token', $token);
+		Router::redirect('pesquisas', $args->id, 'abrir');
 	}
 }
