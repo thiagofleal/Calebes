@@ -29,12 +29,12 @@ class QuestionController extends BaseController
 		$this->setVariable('add_options', false);
 		$this->setVariable('options', array());
 		$this->setVariable('link_questions', Router::getLink('pesquisas', $search->getId(), 'editar'));
-		if (Session::issetFlash('register-question-values')) {
+		if (Session::isset('register-question-values')) {
 			$this->setVariable('form', Session::getFlash('register-question-values'));
 		} else {
 			$this->setVariable('form', new stdClass);
 		}
-		if (Session::issetFlash('register-question')) {
+		if (Session::isset('register-question')) {
 			$this->setVariable('flash', true);
 			$this->setVariable('alert', Session::getFlash('register-question'));
 		} else {
@@ -66,7 +66,7 @@ class QuestionController extends BaseController
 		$type = $request->get('type', '');
 
 		if (empty($text)) {
-			Session::setFlash('register-question', [
+			Session::set('register-question', [
 				'type' => 'alert-danger',
 				'text' => 'O campo de texto não pode ser vazio'
 			]);
@@ -80,12 +80,12 @@ class QuestionController extends BaseController
 		$question->setType($type);
 		$question->setNumber($last_question + 1);
 		if ($search->addQuestion($question)) {
-			Session::setFlash('edit-question', [
+			Session::set('edit-question', [
 				'type' => 'alert-success',
 				'text' => 'Pergunta inserida com sucesso'
 			]);
 		} else {
-			Session::setFlash('edit-question', [
+			Session::set('edit-question', [
 				'type' => 'alert-danger',
 				'text' => 'Erro ao inserir pergunta'
 			]);
@@ -125,7 +125,7 @@ class QuestionController extends BaseController
 		$this->setVariable('add_options', true);
 		$this->setVariable('options', $question->getOptions());
 		$this->setVariable('link_questions', Router::getLink('pesquisas', $search->getId(), 'editar'));
-		if (Session::issetFlash('edit-question-values')) {
+		if (Session::isset('edit-question-values')) {
 			$this->setVariable('form', Session::getFlash('edit-question-values'));
 		} else {
 			$form = new stdClass;
@@ -134,7 +134,7 @@ class QuestionController extends BaseController
 			$form->type = $question->getType();
 			$this->setVariable('form', $form);
 		}
-		if (Session::issetFlash('edit-question')) {
+		if (Session::isset('edit-question')) {
 			$this->setVariable('flash', true);
 			$this->setVariable('alert', Session::getFlash('edit-question'));
 		} else {
@@ -169,7 +169,7 @@ class QuestionController extends BaseController
 		$type = $request->get('type', '');
 
 		if (empty($text)) {
-			Session::setFlash('edit-question', [
+			Session::set('edit-question', [
 				'type' => 'alert-danger',
 				'text' => 'O campo de texto não pode ser vazio'
 			]);
@@ -184,12 +184,12 @@ class QuestionController extends BaseController
 		$question->setType($type);
 
 		if ($question->update() === false) {
-			Session::setFlash('edit-question', [
+			Session::set('edit-question', [
 				'type' => 'alert-danger',
 				'text' => 'Erro ao alterar pergunta'
 			]);
 		} else {
-			Session::setFlash('edit-question', [
+			Session::set('edit-question', [
 				'type' => 'alert-success',
 				'text' => 'Pergunta alterada com sucesso'
 			]);
@@ -215,12 +215,12 @@ class QuestionController extends BaseController
 
 		$this->checkLeaderAndPoint($search->getPoint());
 		if ($question->delete() !== false) {
-			Session::setFlash('edit-search', [
+			Session::set('edit-search', [
 				'type' => 'alert-info',
 				'text' => 'Pergunta excluída'
 			]);
 		} else {
-			Session::setFlash('edit-search', [
+			Session::set('edit-search', [
 				'type' => 'alert-danger',
 				'text' => 'Erro ao excluir pergunta'
 			]);

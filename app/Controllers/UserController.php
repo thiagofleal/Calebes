@@ -36,12 +36,12 @@ class UserController extends BaseController
 		$this->setVariable('title', 'Cadastrar Calebe');
 		$this->setVariable('action', Router::getLink('membros/acao/cadastrar'));
 		$this->setVariable('require_pass', true);
-		if (Session::issetFlash('register-user-values')) {
+		if (Session::isset('register-user-values')) {
 			$this->setVariable('form', Session::getFlash('register-user-values'));
 		} else {
 			$this->setVariable('form', new stdClass);
 		}
-		if (Session::issetFlash('register-user')) {
+		if (Session::isset('register-user')) {
 			$this->setVariable('flash', true);
 			$this->setVariable('alert', Session::getFlash('register-user'));
 		} else {
@@ -60,40 +60,40 @@ class UserController extends BaseController
 		$user = Session::get('user');
 		$member = new Member();
 
-		Session::setFlash('register-user-values', $request);
+		Session::set('register-user-values', $request);
 
 		if (empty($request->name)) {
-			Session::setFlash('register-user', [
+			Session::set('register-user', [
 				'type' => 'alert-warning',
 				'text' => 'Preencha o campo "Nome"'
 			]);
 		}
 		elseif (empty($request->document)) {
-			Session::setFlash('register-user', [
+			Session::set('register-user', [
 				'type' => 'alert-warning',
 				'text' => 'Preencha o campo "Documento"'
 			]);
 		}
 		elseif (empty($request->document_type)) {
-			Session::setFlash('register-user', [
+			Session::set('register-user', [
 				'type' => 'alert-warning',
 				'text' => 'Preencha o campo "Tipo de documento"'
 			]);
 		}
 		elseif (empty($request->password)) {
-			Session::setFlash('register-user', [
+			Session::set('register-user', [
 				'type' => 'alert-warning',
 				'text' => 'Preencha o campo "Senha"'
 			]);
 		}
 		elseif (empty($request->confirm)) {
-			Session::setFlash('register-user', [
+			Session::set('register-user', [
 				'type' => 'alert-warning',
 				'text' => 'Preencha o campo "Confirmar senha"'
 			]);
 		}
 		elseif ($request->confirm != $request->password) {
-			Session::setFlash('register-user', [
+			Session::set('register-user', [
 				'type' => 'alert-warning',
 				'text' => 'Os campos "Senha" e "Confirmar senha" devem possuir o mesmo valor'
 			]);
@@ -111,12 +111,12 @@ class UserController extends BaseController
 			$member->setPoint($user->getPoint());
 
 			if ($member->insert()) {
-				Session::setFlash('register-user', [
+				Session::set('register-user', [
 					'type' => 'alert-success',
 					'text' => 'Calebe cadastrado com sucesso'
 				]);
 			} else {
-				Session::setFlash('register-user', [
+				Session::set('register-user', [
 					'type' => 'alert-warning',
 					'text' => 'O documento ou email já se encontra na base de dados'
 				]);
@@ -133,7 +133,7 @@ class UserController extends BaseController
 		$this->setVariable('action', Router::getLink('membros', $args->id, 'acao/editar'));
 		$this->setVariable('require_pass', false);
 		
-		if (Session::issetFlash('register-user-values')) {
+		if (Session::isset('register-user-values')) {
 			$this->setVariable('form', Session::getFlash('register-user-values'));
 		} else {
 			$member = Member::get($args->id);
@@ -153,7 +153,7 @@ class UserController extends BaseController
 		}
 
 		$this->setVariable('form', $form);
-		if (Session::issetFlash('edit-user')) {
+		if (Session::isset('edit-user')) {
 			$this->setVariable('flash', true);
 			$this->setVariable('alert', Session::getFlash('edit-user'));
 		} else {
@@ -170,28 +170,28 @@ class UserController extends BaseController
 	{
 		$this->checkLeaderOrSelf($args->id);
 		
-		Session::setFlash('edit-user-values', $request);
+		Session::set('edit-user-values', $request);
 
 		if (empty($request->name)) {
-			Session::setFlash('edit-user', [
+			Session::set('edit-user', [
 				'type' => 'alert-warning',
 				'text' => 'Preencha o campo "Nome"'
 			]);
 		}
 		elseif (empty($request->document)) {
-			Session::setFlash('edit-user', [
+			Session::set('edit-user', [
 				'type' => 'alert-warning',
 				'text' => 'Preencha o campo "Documento"'
 			]);
 		}
 		elseif (empty($request->document_type)) {
-			Session::setFlash('edit-user', [
+			Session::set('edit-user', [
 				'type' => 'alert-warning',
 				'text' => 'Preencha o campo "Tipo de documento"'
 			]);
 		}
 		elseif ($request->confirm != $request->password) {
-			Session::setFlash('edit-user', [
+			Session::set('edit-user', [
 				'type' => 'alert-warning',
 				'text' => 'Os campos "Senha" e "Confirmar senha" devem possuir o mesmo valor'
 			]);
@@ -210,18 +210,18 @@ class UserController extends BaseController
 				$member->setPassword($request->get('password', ''));
 
 				if ($member->update()) {
-					Session::setFlash('edit-user', [
+					Session::set('edit-user', [
 						'type' => 'alert-success',
 						'text' => 'Calebe atualizado com sucesso'
 					]);
 				} else {
-					Session::setFlash('edit-user', [
+					Session::set('edit-user', [
 						'type' => 'alert-warning',
 						'text' => 'Erro ao atualizar cadastro'
 					]);
 				}
 			} else {
-				Session::setFlash('edit-user', [
+				Session::set('edit-user', [
 					'type' => 'alert-danger',
 					'text' => 'Usuário não encontrado'
 				]);

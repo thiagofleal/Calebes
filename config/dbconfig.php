@@ -1,9 +1,11 @@
 <?php
 
+use Tonight\Data\Driver\MySQL;
+
 global $dbconfig;
 
-$dbconfig = new stdClass;
-$dbconfig->name = 'caleb_mission';
-$dbconfig->host = 'localhost';
-$dbconfig->user = 'root';
-$dbconfig->pass = '';
+$dbconfig = array();
+$dbconfig[] = MySQL::class;
+$dbconfig[] = 'mysql:host=localhost;dbname=caleb_mission;';
+$dbconfig[] = 'root';
+$dbconfig[] = '';

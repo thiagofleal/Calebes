@@ -36,7 +36,7 @@ class SearchController extends BaseController
 		$this->setVariable('add_questions', false);
 		$this->setVariable('form', new stdClass);
 		$this->setVariable('questions', array());
-		if (Session::issetFlash('register-search')) {
+		if (Session::isset('register-search')) {
 			$this->setVariable('flash', true);
 			$this->setVariable('alert', Session::getFlash('register-search'));
 		} else {
@@ -57,14 +57,14 @@ class SearchController extends BaseController
 		$point = $user->getPoint();
 
 		if ($point === false) {
-			Session::setFlash('register-search', [
+			Session::set('register-search', [
 				'type' => 'alert-danger',
 				'text' => 'É necessário estar alocado em um ponto para criar uma pesquisa'
 			]);
 		} else {
 			$search->setName($request->get('name', ''));
 			if ($point->addSearch($search)) {
-				Session::setFlash('edit-search', [
+				Session::set('edit-search', [
 					'type' => 'alert-success',
 					'text' => 'Pesquisa cadastrada com sucesso'
 				]);
@@ -119,7 +119,7 @@ class SearchController extends BaseController
 		
 		$this->setVariable('form', $form);
 		$this->setVariable('questions', $search->getQuestions());
-		if (Session::issetFlash('edit-search')) {
+		if (Session::isset('edit-search')) {
 			$this->setVariable('flash', true);
 			$this->setVariable('alert', Session::getFlash('edit-search'));
 		} else {
@@ -143,7 +143,7 @@ class SearchController extends BaseController
 		$this->checkLeaderAndPoint($search->getPoint());
 		
 		if ($search === false) {
-			Session::setFlash('edit-search', [
+			Session::set('edit-search', [
 				'type' => 'alert-danger',
 				'text' => 'Pesquisa não encontrada'
 			]);
@@ -152,7 +152,7 @@ class SearchController extends BaseController
 			$search->setPoint($user->getPoint());
 			$search->setName($request->get('name', ''));
 			$search->update();
-			Session::setFlash('edit-search', [
+			Session::set('edit-search', [
 				'type' => 'alert-success',
 				'text' => 'Pesquisa atualizada com sucesso'
 			]);
@@ -165,19 +165,19 @@ class SearchController extends BaseController
 		$this->checkLeader();
 		$search = Search::get($args->id);
 		if ($search === false) {
-			Session::setFlash('delete-search', [
+			Session::set('delete-search', [
 				'type' => 'alert-danger',
 				'text' => 'Pesquisa não encontrada'
 			]);
 		} else {
 			$user = Session::get('user');
 			if ($search->delete() !== false) {
-				Session::setFlash('delete-search', [
+				Session::set('delete-search', [
 					'type' => 'alert-success',
 					'text' => 'Pesquisa excluída com sucesso'
 				]);
 			} else {
-				Session::setFlash('delete-search', [
+				Session::set('delete-search', [
 					'type' => 'alert-danger',
 					'text' => 'Erro ao excluir pesquisa'
 				]);
@@ -207,7 +207,7 @@ class SearchController extends BaseController
 		$this->setVariable('questions', $search->getQuestions());
 		$this->setVariable('action', Router::getLink('pesquisas', $search->getId(), 'acao/responder'));
 		
-		if (Session::issetFlash('open-search')) {
+		if (Session::isset('open-search')) {
 			$this->setVariable('flash', true);
 			$this->setVariable('alert', Session::getFlash('open-search'));
 		} else {
@@ -255,7 +255,7 @@ class SearchController extends BaseController
 		if (! Session::isset('search-token')) {
 			$this->setVariable('title', "Verificar token");
 
-			if (Session::issetFlash('form-token')) {
+			if (Session::isset('form-token')) {
 				$this->setVariable('flash', true);
 				$this->setVariable('alert', Session::getFlash('form-token'));
 			} else {
@@ -276,7 +276,7 @@ class SearchController extends BaseController
 			$search_access = Session::get('search-token');
 			$search_access[$search->getId()] = false;
 			Session::set('search-token', $search_access);
-			Session::setFlash('form-token', [
+			Session::set('form-token', [
 				'type' => 'alert-danger',
 				'text' => 'Token incorreto'
 			]);

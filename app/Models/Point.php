@@ -99,7 +99,7 @@ class Point
 
 	public function getLeaders()
 	{
-		$db = new DataBase(['leader', 'member']);
+		$db = new DataBase('leader', 'member');
 		$ret = array();
 		foreach ($db->leader->join($db->member, function($leader, $member) {
 			return $leader->id == $member->id;
@@ -121,7 +121,8 @@ class Point
 			'name' => $this->name,
 			'address' => $this->address
 		]);
-		$db->point->update();
+		$db->point->commit();
+		$this->load($db->point->getRowsInsert()->last()->id);
 	}
 
 	public function load($id)
@@ -132,11 +133,11 @@ class Point
 			return $row->id == $id;
 		});
 
-		if ($result->size() == 0) {
+		if ($result->count() == 0) {
 			return false;
 		}
 
-		$result = $result->get(0);
+		$result = $result->first();
 		$this->id = $result->id;
 		$this->name = $result->name;
 		$this->address = $result->address;
@@ -152,17 +153,17 @@ class Point
 			return $row->id == $this->id;
 		});
 
-		if ($result->size() == 0) {
+		if ($result->count() == 0) {
 			return false;
 		}
 
-		$result = $result->get(0);
+		$result = $result->first();
 		$result->id = $this->id;
 		$result->name = $this->name;
 		$result->address = $this->address;
 
 		$db->point->setValue($result);
-		$db->point->update();
+		$db->point->commit();
 
 		return true;
 	}
@@ -171,18 +172,11 @@ class Point
 	{
 		$db = new DataBase('point');
 
-		$result = $db->point->where( function($row) {
+		$db->point->removeWhere( function($row) {
 			return $row->id == $this->id;
 		});
 
-		if ($result->size() == 0) {
-			return false;
-		}
-
-		$result = $result->get(0);
-
-		$db->point->removeFirst($result);
-		$db->point->update();
+		$db->point->commit();
 
 		return true;
 	}

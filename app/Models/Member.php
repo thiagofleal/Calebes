@@ -116,8 +116,8 @@ class Member
 			return ($row->document == $user || $row->email == $user) && $row->password == md5($password);
 		});
 
-		if ($result->size() > 0) {
-			return self::get($result->get(0)->id);
+		if ($result->count() > 0) {
+			return self::get($result->first()->id);
 		} else {
 			return false;
 		}
@@ -131,7 +131,7 @@ class Member
 			return $row->document == $this->document || (!empty($this->email) && $row->email == $this->email);
 		});
 
-		if ($result->size() > 0) {
+		if ($result->count() > 0) {
 			return false;
 		}
 
@@ -147,8 +147,8 @@ class Member
 			'point' => $this->point,
 			'tshirt_size' => $this->tshirt_size
 		]);
-		$db->member->update();
-		return true;
+		$db->member->commit();
+		return $this->load($db->member->getRowsInsert()->last()->id);
 	}
 
 	public function load($id)
@@ -159,11 +159,11 @@ class Member
 			return $row->id == $id;
 		});
 
-		if ($result->size() == 0) {
+		if ($result->count() == 0) {
 			return false;
 		}
 
-		$result = $result->get(0);
+		$result = $result->first();
 
 		foreach ($result as $key => $value) {
 			$this->{$key} = $result->{$key};
@@ -185,7 +185,7 @@ class Member
 				&& $row->id != $this->id;
 		});
 
-		if ($result->size() > 0) {
+		if ($result->count() > 0) {
 			return false;
 		}
 
@@ -193,18 +193,18 @@ class Member
 			return $row->id == $this->id;
 		});
 
-		if ($result->size() == 0) {
+		if ($result->count() == 0) {
 			return false;
 		}
 
-		$result = $result->get(0);
+		$result = $result->first();
 
 		foreach ($result as $key => $value) {
 			$result->{$key} = $this->{$key};
 		}
 
 		$db->member->setValue($result);
-		$db->member->update();
+		$db->member->commit();
 
 		return true;
 	}
@@ -213,18 +213,11 @@ class Member
 	{
 		$db = new DataBase('member');
 
-		$result = $db->member->where( function($row) {
+		$db->member->removeWhere( function($row) {
 			return $row->id == $this->id;
 		});
 
-		if ($result->size() == 0) {
-			return false;
-		}
-
-		$result = $result->get(0);
-
-		$db->member->removeFirst($result);
-		$db->member->update();
+		$db->member->commit();
 
 		return true;
 	}

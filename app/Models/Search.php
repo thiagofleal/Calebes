@@ -91,11 +91,11 @@ class Search
 			return $row->search == $this->id && $row->number == $number;
 		});
 
-		if ($result->size() == 0) {
+		if ($result->count() == 0) {
 			return false;
 		}
 
-		return Question::get($result->get(0)->id);
+		return Question::get($result->first()->id);
 	}
 
 	public function addQuestion(Question $question)
@@ -124,7 +124,7 @@ class Search
 
 	public function getAnswersFilter(array $filter)
 	{
-		$db = new DataBase(['answer', 'member']);
+		$db = new DataBase('answer', 'member');
 		$ret = array();
 		
 		foreach ($db->answer->select( function($row) {
@@ -173,7 +173,7 @@ class Search
 			return $row->option == $option_id;
 		});
 
-		return $result->size();
+		return $result->count();
 	}
 
 	public function isVisible()
@@ -195,7 +195,8 @@ class Search
 			'token' => $this->token,
 			'name' => $this->name
 		]);
-		$db->search->update();
+		$db->search->commit();
+		$this->load($db->search->getRowsInsert()->last()->id);
 	}
 
 	public function load($id)
@@ -206,11 +207,11 @@ class Search
 			return $row->id == $id;
 		});
 
-		if ($result->size() == 0) {
+		if ($result->count() == 0) {
 			return false;
 		}
 
-		$result = $result->get(0);
+		$result = $result->first();
 
 		foreach ($result as $key => $value) {
 			$this->{$key} = $result->{$key};
@@ -227,18 +228,18 @@ class Search
 			return $row->id == $this->id;
 		});
 
-		if ($result->size() == 0) {
+		if ($result->count() == 0) {
 			return false;
 		}
 
-		$result = $result->get(0);
+		$result = $result->first();
 
 		foreach ($result as $key => $value) {
 			$result->{$key} = $this->{$key};
 		}
 		
 		$db->search->setValue($result);
-		$db->search->update();
+		$db->search->commit();
 
 		return true;
 	}
@@ -247,30 +248,19 @@ class Search
 	{
 		$db = new DataBase('search');
 
-		$result = $db->search->where( function($row) {
-			return $row->id == $this->id;
-		});
-
-		if ($result->size() == 0) {
-			return false;
-		}
-
 		foreach ($this->getQuestions() as $question) {
-			if ($question->delete() === false) {
-				return false;
-			}
+			$question->delete();
 		}
 
 		foreach ($this->getAnswers() as $answer) {
-			if ($answer->delete() === false) {
-				return false;
-			}
+			$answer->delete();
 		}
 
-		$result = $result->get(0);
+		$db->search->removeWhere( function($row) {
+			return $row->id == $this->id;
+		});
 
-		$db->search->removeFirst($result);
-		$db->search->update();
+		$db->search->commit();
 
 		return true;
 	}

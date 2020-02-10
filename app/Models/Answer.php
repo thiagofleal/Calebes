@@ -66,7 +66,7 @@ class Answer
 
 	public function getOptions()
 	{
-		$db = new DataBase(['question', 'option', 'selected_option']);
+		$db = new DataBase('question', 'option', 'selected_option');
 		$ret = array();
 		foreach ($db->selected_option->select( function($row) {
 			$row->id_selected = $row->id;
@@ -101,7 +101,8 @@ class Answer
 			'user' => $this->user,
 			'search' => $this->search
 		]);
-		$db->answer->update();
+		$db->answer->commit();
+		$this->load($db->answer->getRowsInsert()->last()->id);
 	}
 
 	public function load($id)
@@ -112,11 +113,11 @@ class Answer
 			return $row->id == $id;
 		});
 
-		if ($result->size() == 0) {
+		if ($result->count() == 0) {
 			return false;
 		}
 
-		$result = $result->get(0);
+		$result = $result->first();
 
 		foreach ($result as $key => $value) {
 			$this->{$key} = $result->{$key};
@@ -133,18 +134,18 @@ class Answer
 			return $row->id == $this->id;
 		});
 
-		if ($result->size() == 0) {
+		if ($result->count() == 0) {
 			return false;
 		}
 
-		$result = $result->get(0);
+		$result = $result->first();
 
 		foreach ($result as $key => $value) {
 			$result->{$key} = $this->{$key};
 		}
 		
 		$db->answer->setValue($result);
-		$db->answer->update();
+		$db->answer->commit();
 
 		return true;
 	}
@@ -153,24 +154,15 @@ class Answer
 	{
 		$db = new DataBase('answer');
 
-		$result = $db->answer->where( function($row) {
+		foreach ($this->getOptions() as $option) {
+			$option->delete();
+		}
+
+		$db->answer->removeWhere( function($row) {
 			return $row->id == $this->id;
 		});
 
-		if ($result->size() == 0) {
-			return false;
-		}
-
-		foreach ($this->getOptions() as $option) {
-			if ($option->delete() === false) {
-				return false;
-			}
-		}
-
-		$result = $result->get(0);
-
-		$db->answer->removeFirst($result);
-		$db->answer->update();
+		$db->answer->commit();
 
 		return true;
 	}

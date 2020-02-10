@@ -28,9 +28,6 @@ class AnswerController extends BaseController
 		$answer->setUser($user);
 		$search->addAnswer($answer);
 
-		$answers = $search->getAnswers();
-		$answer = array_shift($answers);
-
 		foreach ($search_answers["value"] as $question_number => $question_options) {
 			$question = $search->getQuestion($question_number);
 			
@@ -47,7 +44,12 @@ class AnswerController extends BaseController
 			}
 		}
 
-		Router::redirect();
+		Session::set('open-search', [
+			'type' => "alert-info",
+			'text' => "Resposta adicionada ao banco de dados com sucesso"
+		]);
+
+		Router::redirect('pesquisas', $search->getId(), 'abrir');
 	}
 
 	public function results($args, $request)

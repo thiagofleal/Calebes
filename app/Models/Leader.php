@@ -43,7 +43,8 @@ class Leader
 		$db->leader->append([
 			'id' => $this->id
 		]);
-		$db->leader->update();
+		$db->leader->commit();
+		$this->load($db->leader->getRowsInsert()->last()->id);
 	}
 
 	public function load($id)
@@ -54,11 +55,11 @@ class Leader
 			return $row->id == $id;
 		});
 
-		if ($result->size() == 0) {
+		if ($result->count() == 0) {
 			return false;
 		}
 
-		$result = $result->get(0);
+		$result = $result->first();
 		$this->id = $result->id;
 
 		return true;
@@ -72,15 +73,15 @@ class Leader
 			return $row->id == $this->id;
 		});
 
-		if ($result->size() == 0) {
+		if ($result->count() == 0) {
 			return false;
 		}
 
-		$result = $result->get(0);
+		$result = $result->first();
 		$result->id = $this->id;
 		
 		$db->leader->setValue($result);
-		$db->leader->update();
+		$db->leader->commit();
 
 		return true;
 	}
@@ -89,18 +90,11 @@ class Leader
 	{
 		$db = new DataBase('leader');
 
-		$result = $db->leader->where( function($row) {
+		$db->leader->removeWhere( function($row) {
 			return $row->id == $this->id;
 		});
 
-		if ($result->size() == 0) {
-			return false;
-		}
-
-		$result = $result->get(0);
-
-		$db->leader->removeFirst($result);
-		$db->leader->update();
+		$db->leader->commit();
 
 		return true;
 	}

@@ -79,7 +79,8 @@ class SelectedOption
 			'option' => $this->option,
 			'text' => $this->text
 		]);
-		$db->selected_option->update();
+		$db->selected_option->commit();
+		$this->load($db->selected_option->getRowsInsert()->last()->id);
 	}
 
 	public function load($id)
@@ -90,11 +91,11 @@ class SelectedOption
 			return $row->id == $id;
 		});
 
-		if ($result->size() == 0) {
+		if ($result->count() == 0) {
 			return false;
 		}
 
-		$result = $result->get(0);
+		$result = $result->first();
 
 		foreach ($result as $key => $value) {
 			$this->{$key} = $result->{$key};
@@ -111,18 +112,18 @@ class SelectedOption
 			return $row->id == $this->id;
 		});
 
-		if ($result->size() == 0) {
+		if ($result->count() == 0) {
 			return false;
 		}
 
-		$result = $result->get(0);
+		$result = $result->first();
 
 		foreach ($result as $key => $value) {
 			$result->{$key} = $this->{$key};
 		}
 		
 		$db->selected_option->setValue($result);
-		$db->selected_option->update();
+		$db->selected_option->commit();
 
 		return true;
 	}
@@ -131,18 +132,11 @@ class SelectedOption
 	{
 		$db = new DataBase('selected_option');
 
-		$result = $db->selected_option->where( function($row) {
+		$db->selected_option->removeWhere( function($row) {
 			return $row->id == $this->id;
 		});
 
-		if ($result->size() == 0) {
-			return false;
-		}
-
-		$result = $result->get(0);
-
-		$db->selected_option->removeFirst($result);
-		$db->selected_option->update();
+		$db->selected_option->commit();
 
 		return true;
 	}

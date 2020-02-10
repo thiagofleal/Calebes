@@ -5,34 +5,29 @@ namespace App\Models;
 use PDO;
 use Exception;
 use PDOException;
-use Tonight\Data\MySQL;
+use Tonight\Data\DataBase as DB;
 use Tonight\MVC\Router;
 
-class DataBase extends MySQL
+class DataBase extends DB
 {
-	public function __construct($fields)
+	public function __construct(...$fields)
 	{
 		global $dbconfig;
 
 		try
 		{
-			$con = array(
-				'dbname' => $dbconfig->name,
-				'host' => $dbconfig->host
-			);
-			$user = $dbconfig->user;
-			$pass = $dbconfig->pass;
-			parent::__construct($con, $user, $pass);
-			$this->start($fields);
-			$this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			parent::__construct(...$dbconfig);
+			$this->load(...$fields);
 		}
 		catch(PDOException $e)
 		{
-			Router::redirect('erros', 'Conexão com banco de dados', $e->getMessage());
+			print_log($e->getMessage());
+			Router::redirect('erros', 'Conexão com banco de dados', 'Houve um problema na operação do banco de dados');
 		}
 		catch(Exception $e)
 		{
-			Router::redirect('erros', 'Erro interno', $e->getMessage());
+			print_log($e->getMessage());
+			Router::redirect('erros', 'Erro interno', 'Houve um erro inesperado');
 		}
 	}
 }

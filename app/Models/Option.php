@@ -81,7 +81,7 @@ class Option
 			return $row->id == $this->id;
 		});
 
-		if ($result->size() > 0) {
+		if ($result->count() > 0) {
 			return false;
 		}
 
@@ -91,7 +91,8 @@ class Option
 			'text' => $this->text,
 			'insert' => $this->insert
 		]);
-		$db->option->update();
+		$db->option->commit();
+		$this->load($db->option->getRowsInsert()->last()->id);
 		return true;
 	}
 
@@ -103,11 +104,11 @@ class Option
 			return $row->id == $id;
 		});
 
-		if ($result->size() == 0) {
+		if ($result->count() == 0) {
 			return false;
 		}
 
-		$result = $result->get(0);
+		$result = $result->first();
 
 		foreach ($result as $key => $value) {
 			$this->{$key} = $result->{$key};
@@ -124,18 +125,18 @@ class Option
 			return $row->id == $this->id;
 		});
 
-		if ($result->size() == 0) {
+		if ($result->count() == 0) {
 			return false;
 		}
 
-		$result = $result->get(0);
+		$result = $result->first();
 
 		foreach ($result as $key => $value) {
 			$result->{$key} = $this->{$key};
 		}
 
 		$db->option->setValue($result);
-		$db->option->update();
+		$db->option->commit();
 
 		return true;
 	}
@@ -144,18 +145,11 @@ class Option
 	{
 		$db = new DataBase('option');
 
-		$result = $db->option->where( function($row) {
+		$db->option->removeWhere( function($row) {
 			return $row->id == $this->id;
 		});
 
-		if ($result->size() == 0) {
-			return false;
-		}
-
-		$result = $result->get(0);
-		
-		$db->option->removeFirst($result);
-		$db->option->update();
+		$db->option->commit();
 
 		$question = $this->getQuestion();
 		$next = $this->number + 1;

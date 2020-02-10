@@ -47,7 +47,7 @@ class PointController extends BaseController
 		$this->checkLeader();
 		$this->setVariable('title', 'Cadastrar ponto');
 		$this->setVariable('action', Router::getLink('pontos/acao/cadastrar'));
-		if (Session::issetFlash('register-point')) {
+		if (Session::isset('register-point')) {
 			$this->setVariable('flash', true);
 			$this->setVariable('alert', Session::getFlash('register-point'));
 		} else {
@@ -57,7 +57,7 @@ class PointController extends BaseController
 				'text' => ''
 			]);
 		}
-		if (Session::issetFlash('register-point-values')) {
+		if (Session::isset('register-point-values')) {
 			$this->setVariable('form', Session::getFlash('register-point-values'));
 		} else {
 			$this->setVariable('form', new stdClass);
@@ -71,20 +71,20 @@ class PointController extends BaseController
 		$point = new Point();
 
 		if (empty($request->name)) {
-			Session::setFlash('register-point', [
+			Session::set('register-point', [
 				'type' => 'alert-warning',
 				'text' => 'Preencha o campo "Nome"'
 			]);
-			Session::setFlash('register-point-values', $request);
+			Session::set('register-point-values', $request);
 			Router::redirect('pontos/cadastrar');
 			exit;
 		}
 		if (empty($request->address)) {
-			Session::setFlash('register-point', [
+			Session::set('register-point', [
 				'type' => 'alert-warning',
 				'text' => 'Preencha o campo "Endereço"'
 			]);
-			Session::setFlash('register-point-values', $request);
+			Session::set('register-point-values', $request);
 			Router::redirect('pontos/cadastrar');
 			exit;
 		}
@@ -92,11 +92,11 @@ class PointController extends BaseController
 		$point->setName($request->name);
 		$point->setAddress($request->address);
 		$point->insert();
-		Session::setFlash('register-point', [
+		Session::set('register-point', [
 			'type' => 'alert-success',
 			'text' => 'Ponto cadastrado com sucesso'
 		]);
-		Session::setFlash('register-point-values', new stdClass);
+		Session::set('register-point-values', new stdClass);
 		Router::redirect('pontos/cadastrar');
 	}
 
@@ -105,7 +105,7 @@ class PointController extends BaseController
 		$this->checkLeader();
 		$this->setVariable('title', 'Editar ponto');
 		$this->setVariable('action', Router::getLink('pontos', $args->id, 'acao/editar'));
-		if (Session::issetFlash('edit-point')) {
+		if (Session::isset('edit-point')) {
 			$this->setVariable('flash', true);
 			$this->setVariable('alert', Session::getFlash('edit-point'));
 		} else {
@@ -129,20 +129,20 @@ class PointController extends BaseController
 		$this->checkLeader();
 		
 		if (empty($request->name)) {
-			Session::setFlash('edit-point', [
+			Session::set('edit-point', [
 				'type' => 'alert-warning',
 				'text' => 'Preencha o campo "Nome"'
 			]);
-			Session::setFlash('edit-point-values', $request);
+			Session::set('edit-point-values', $request);
 			Router::redirect('pontos', $args->id, 'editar');
 			exit;
 		}
 		if (empty($request->address)) {
-			Session::setFlash('edit-point', [
+			Session::set('edit-point', [
 				'type' => 'alert-warning',
 				'text' => 'Preencha o campo "Endereço"'
 			]);
-			Session::setFlash('edit-point-values', $request);
+			Session::set('edit-point-values', $request);
 			Router::redirect('pontos', $args->id, 'editar');
 			exit;
 		}
@@ -150,11 +150,11 @@ class PointController extends BaseController
 		$point = Point::get($args->id);
 
 		if ($point === false) {
-			Session::setFlash('edit-point', [
+			Session::set('edit-point', [
 				'type' => 'alert-danger',
 				'text' => 'Ponto não encontrado'
 			]);
-			Session::setFlash('edit-point-values', $request);
+			Session::set('edit-point-values', $request);
 			Router::redirect('pontos', $args->id, 'editar');
 			exit;
 		}
@@ -162,13 +162,13 @@ class PointController extends BaseController
 		$point->setName($request->name);
 		$point->setAddress($request->address);
 		if ($point->update()){
-			Session::setFlash('edit-point', [
+			Session::set('edit-point', [
 				'type' => 'alert-success',
 				'text' => 'Ponto atualizado com sucesso'
 			]);
-			Session::setFlash('edit-point-values', new stdClass);
+			Session::set('edit-point-values', new stdClass);
 		} else {
-			Session::setFlash('edit-point', [
+			Session::set('edit-point', [
 				'type' => 'alert-danger',
 				'text' => 'Erro ao editar ponto'
 			]);

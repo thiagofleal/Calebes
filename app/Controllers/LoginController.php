@@ -12,9 +12,9 @@ class LoginController extends BaseController
 	{
 		$this->setVariable('title', "Login");
 		$this->setVariable('action', Router::getLink('login/acao'));
-		if (Session::issetFlash('login')) {
+		if (Session::isset('flash-login')) {
 			$this->setVariable('flash', true);
-			$this->setVariable('alert', Session::getFlash('login'));
+			$this->setVariable('alert', Session::getFlash('flash-login'));
 		} else {
 			$this->setVariable('flash', false);
 			$this->setVariable('alert', [
@@ -28,7 +28,7 @@ class LoginController extends BaseController
 	public function action($request)
 	{
 		if (empty($request->user)) {
-			Session::setFlash('login', [
+			Session::set('flash-login', [
 				'type' => 'alert-warning',
 				'text' => 'Preencha o campo "Usuário"'
 			]);
@@ -36,7 +36,7 @@ class LoginController extends BaseController
 			exit;
 		}
 		if (empty($request->password)) {
-			Session::setFlash('login', [
+			Session::set('login', [
 				'type' => 'alert-warning',
 				'text' => 'Preencha o campo "Senha"'
 			]);
@@ -47,7 +47,7 @@ class LoginController extends BaseController
 		$user = Member::login($request->user, $request->password);
 
 		if ($user === false) {
-			Session::setFlash('login', [
+			Session::set('flash-login', [
 				'type' => 'alert-danger',
 				'text' => 'Usuário e/ou senha incorretos'
 			]);

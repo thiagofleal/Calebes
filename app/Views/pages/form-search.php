@@ -17,23 +17,35 @@
 			</div>
 			<input type="text" name="name" id="name" class="form-control" value="<?= $form->name ?? '' ?>" />
 		</div>
-<?php if ($add_questions): ?>
-		<a href="<?= $add_question_link ?>" class="btn btn-success">
-			Adicionar pergunta
-		</a>
-		<a href="<?= $view_link ?>" class="btn btn-info" target="_blank">
-			Visualizar
-		</a>
-<?php if ($release): ?>
-		<a href="<?= $release_link ?>" class="btn btn-warning">
-			Liberar
-		</a>
-<?php else: ?>
-		<a href="<?= $release_link ?>" class="btn btn-secondary">
-			Bloquear
-		</a>
-<?php endif; ?>
 		<hr>
+		<button type="submit" class="btn btn-primary">
+			Salvar
+		</button>
+		<button type="button" class="btn btn-danger btn-clear-form">
+			Cancelar
+		</button>
+		<a href="<?= Router::getLink('pesquisas') ?>" class="btn btn-secondary">
+			Gerenciar pesquisas
+		</a>
+<?php if ($add_questions): ?>
+		<hr>
+		<div class="mb-4">
+			<a href="<?= $add_question_link ?>" class="btn btn-success">
+				Adicionar pergunta
+			</a>
+			<a href="<?= $view_link ?>" class="btn btn-info" target="_blank">
+				Visualizar
+			</a>
+<?php if ($release): ?>
+			<a href="<?= $release_link ?>" class="btn btn-warning">
+				Liberar
+			</a>
+<?php else: ?>
+			<a href="<?= $release_link ?>" class="btn btn-secondary">
+				Bloquear
+			</a>
+<?php endif; ?>
+		</div>
 		<table class="table table-borderless table-responsive d-md-table">
 			<thead>
 				<tr>
@@ -87,16 +99,6 @@
 <?php endforeach; ?>
 			</tbody>
 		</table>
-<?php endif; ?>
-		<hr>
-		<button type="submit" class="btn btn-primary">
-			Salvar
-		</button>
-		<button type="button" class="btn btn-danger btn-clear-form">
-			Cancelar
-		</button>
-		<a href="<?= Router::getLink('pesquisas') ?>" class="btn btn-secondary">
-			Gerenciar pesquisas
-		</a>
 	</form>
+<?php endif; ?>
 </div>

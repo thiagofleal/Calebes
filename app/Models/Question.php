@@ -89,11 +89,11 @@ class Question
 			return $row->question == $this->id && $row->number == $number;
 		});
 
-		if ($result->size() == 0) {
+		if ($result->count() == 0) {
 			return false;
 		}
 
-		return Option::get($result->get(0)->id);
+		return Option::get($result->first()->id);
 	}
 
 	public function addOption(Option $option)
@@ -116,7 +116,8 @@ class Question
 			'text' => $this->text,
 			'type' => $this->type
 		]);
-		$db->question->update();
+		$db->question->commit();
+		$this->load($db->question->getRowsInsert()->last()->id);
 	}
 
 	public function load($id)
@@ -127,11 +128,11 @@ class Question
 			return $row->id == $id;
 		});
 
-		if ($result->size() == 0) {
+		if ($result->count() == 0) {
 			return false;
 		}
 
-		$result = $result->get(0);
+		$result = $result->first();
 
 		foreach ($result as $key => $value) {
 			$this->{$key} = $result->{$key};
@@ -148,18 +149,18 @@ class Question
 			return $row->id == $this->id;
 		});
 
-		if ($result->size() == 0) {
+		if ($result->count() == 0) {
 			return false;
 		}
 
-		$result = $result->get(0);
+		$result = $result->first();
 
 		foreach ($result as $key => $value) {
 			$result->{$key} = $this->{$key};
 		}
 		
 		$db->question->setValue($result);
-		$db->question->update();
+		$db->question->commit();
 
 		return true;
 	}
@@ -168,24 +169,15 @@ class Question
 	{
 		$db = new DataBase('question');
 
-		$result = $db->question->where( function($row) {
+		foreach ($this->getOptions() as $option) {
+			$option->delete();
+		}
+
+		$db->question->removeWhere( function($row) {
 			return $row->id == $this->id;
 		});
 
-		if ($result->size() == 0) {
-			return false;
-		}
-
-		foreach ($this->getOptions() as $option) {
-			if ($option->delete() === false) {
-				return false;
-			}
-		}
-
-		$result = $result->get(0);
-
-		$db->question->removeFirst($result);
-		$db->question->update();
+		$db->question->commit();
 
 		$search = $this->getSearch();
 		$next = $this->number + 1;

@@ -47,12 +47,12 @@ class OptionController extends BaseController
 		$option->setInsert($insert);
 
 		if ($question->addOption($option) === false) {
-			Session::setFlash('edit-question', [
+			Session::set('edit-question', [
 				'type' => 'alert-danger',
 				'text' => 'Esta pergunta já possui uma resposta com esse número'
 			]);
 		} else {
-			Session::setFlash('edit-question', [
+			Session::set('edit-question', [
 				'type' => 'alert-info',
 				'text' => 'Resposta adicionada'
 			]);
@@ -86,12 +86,12 @@ class OptionController extends BaseController
 		}
 
 		if ($option->delete() !== false) {
-			Session::setFlash('edit-question', [
+			Session::set('edit-question', [
 				'type' => 'alert-info',
 				'text' => 'Resposta excluída'
 			]);
 		} else {
-			Session::setFlash('edit-question', [
+			Session::set('edit-question', [
 				'type' => 'alert-danger',
 				'text' => 'Erro ao excluir resposta'
 			]);
@@ -143,7 +143,7 @@ class OptionController extends BaseController
 		$this->setVariable('images', Router::getLink('assets/images'));
 		$this->setVariable('add_options', true);
 		$this->setVariable('options', $question->getOptions());
-		if (Session::issetFlash('edit-question-values')) {
+		if (Session::isset('edit-question-values')) {
 			$this->setVariable('form', Session::getFlash('edit-question-values'));
 		} else {
 			$form = new \stdClass;
@@ -152,7 +152,7 @@ class OptionController extends BaseController
 			$form->type = $question->getType();
 			$this->setVariable('form', $form);
 		}
-		if (Session::issetFlash('edit-option-values')) {
+		if (Session::isset('edit-option-values')) {
 			$this->setVariable('form', Session::getFlash('edit-option-values'));
 		} else {
 			$opt = new \stdClass;
@@ -160,7 +160,7 @@ class OptionController extends BaseController
 			$opt->insert = $option->getInsert();
 			$this->setVariable('opt', $opt);
 		}
-		if (Session::issetFlash('edit-question')) {
+		if (Session::isset('edit-question')) {
 			$this->setVariable('flash', true);
 			$this->setVariable('alert', Session::getFlash('edit-question'));
 		} else {
@@ -204,12 +204,12 @@ class OptionController extends BaseController
 		$option->setInsert($insert);
 
 		if ($option->update() === false) {
-			Session::setFlash('edit-question', [
+			Session::set('edit-question', [
 				'type' => 'alert-danger',
 				'text' => 'Erro ao editar resposta'
 			]);
 		} else {
-			Session::setFlash('edit-question', [
+			Session::set('edit-question', [
 				'type' => 'alert-info',
 				'text' => 'Resposta editada'
 			]);
