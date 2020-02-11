@@ -79,11 +79,7 @@ class AnswerController extends BaseController
 		);
 		$this->setVariable('filter', $request);
 		$this->setVariable('answers', $search->getAnswersFilter($filter));
-		$this->setVariable('general_link', Router::getLink(
-			'pesquisas', $search->getId(), 'resultados/geral'
-			.'?user='.$request->get('user', '')
-			.'&date='.$request->get('date', '')
-		));
+		$this->setVariable('general_link', Router::getLink('pesquisas', $search->getId(), 'resultados/geral'));
 		$this->render('list-results', 'main-template');
 	}
 

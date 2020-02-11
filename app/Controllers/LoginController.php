@@ -33,7 +33,7 @@ class LoginController extends BaseController
 				'text' => 'Preencha o campo "Usuário"'
 			]);
 			Router::redirect('login');
-			exit;
+			exit();
 		}
 		if (empty($request->password)) {
 			Session::set('login', [
@@ -41,7 +41,7 @@ class LoginController extends BaseController
 				'text' => 'Preencha o campo "Senha"'
 			]);
 			Router::redirect('login');
-			exit;
+			exit();
 		}
 
 		$user = Member::login($request->user, $request->password);
