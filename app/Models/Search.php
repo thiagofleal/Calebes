@@ -135,14 +135,19 @@ class Search
 		})->where( function($row) {
 			return $row->search == $this->id;
 		})->where( function($row) use($filter) {
-			foreach ($filter as $key => $value) {
-				if (! empty($value)) {
-					if (strpos($row->{$key}, $value) === false) {
-						return false;
-					}
+			if (! empty($filter['name'])) {
+				if (strpos(strtolower($row->name), strtolower($filter['name'])) === false) {
+					return false;
+				}
+			}
+			if (! empty($filter['time'])) {
+				if (date('d/m/Y', strtotime($row->time)) != date('d/m/Y', strtotime($filter['time']))) {
+					return false;
 				}
 			}
 			return true;
+		})->order( function($a, $b) {
+			return strtotime($b->time) - strtotime($a->time);
 		}) as $value) {
 			$ret[] = Answer::get($value->answer);
 		}

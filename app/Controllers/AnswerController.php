@@ -70,12 +70,20 @@ class AnswerController extends BaseController
 		if (isset($request->user)) {
 			$filter['name'] = $request->user ?? '';
 		}
+		if (isset($request->date)) {
+			$filter['time'] = $request->date ?? '';
+		}
 
 		$this->setVariable('filter_action',
 			Router::getLink('pesquisas', $search->getId(), 'resultados')
 		);
+		$this->setVariable('filter', $request);
 		$this->setVariable('answers', $search->getAnswersFilter($filter));
-		$this->setVariable('general_link', Router::getLink('pesquisas', $search->getId(), 'resultados/geral'));
+		$this->setVariable('general_link', Router::getLink(
+			'pesquisas', $search->getId(), 'resultados/geral'
+			.'?user='.$request->get('user', '')
+			.'&date='.$request->get('date', '')
+		));
 		$this->render('list-results', 'main-template');
 	}
 

@@ -2,7 +2,7 @@
 <div class="container">
 	<h1><?= $title ?></h1>
 	<hr>
-	<a href="<?= $general_link ?>" class="btn btn-info mb-5" target="_blank">
+	<a href="<?= $general_link ?>" class="btn btn-info mb-3" target="_blank">
 		Resultados gerais
 	</a>
 	<table class="table table-inverse table-hover table-borderless table-responsive d-md-table">
@@ -12,22 +12,27 @@
 				<th>Data</th>
 				<th>Ação</th>
 			</tr>
+			<form method="get">
+				<tr>
+					<th>
+						<div class="input-group">
+							<input type="search" name="user" class="form-control" value="<?= $filter->user ?? '' ?>" />
+						</div>
+					</th>
+					<th>
+						<div class="input-group">
+							<input type="date" name="date" class="form-control" value="<?= $filter->date ?? '' ?>" />
+						</div>
+					</th>
+					<th>
+						<button type="submit" class="btn btn-secondary">
+							Filtrar
+						</button>
+					</th>
+				</tr>
+			</form>
 		</thead>
 		<tbody>
-			<tr>
-				<td>
-					<form method="get">
-						<div class="input-group">
-							<input type="text" name="user" class="form-control" />
-							<div class="input-group-append">
-								<button type="submit" class="btn btn-secondary">
-									Filtrar
-								</button>
-							</div>
-						</form>
-					</form>
-				</td>
-			</tr>
 <?php foreach ($answers as $answer): ?>
 			<tr>
 				<td><?= $answer->getUser()->getName() ?></td>
