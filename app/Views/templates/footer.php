@@ -21,6 +21,9 @@
 			</div>
 		</div>
 		<hr>
-		<center>&copy; <?= date('Y') ?> - Thiago Fernandes Leal</center>
+		<p>
+			<center>&copy; <?= date('Y') ?> - Ministério de Jovens Adventistas de Sete Lagoas/MG</center>
+			<center><small>Produzido por <strong>Thiago Fernandes Leal</strong></small></center>
+		</p>
 	</div>
 </footer>
